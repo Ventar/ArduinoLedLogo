@@ -1,0 +1,116 @@
+<html>
+
+<body style='float:left'>
+    <h1>Info Logo Server</h1>
+    <hr />
+    <h2>Status</h2>
+    <div style='margin-left: 20'>
+
+    </div>
+
+    <h2>Update</h2>
+    <div style='margin-left: 20'>
+        <div style='margin-top:10px'><b>Parameter</b></div>
+        <div style='margin-top:6px'>
+            <span style='float:left; vertical-align: top; width: 115px; margin-left:35px;'><u>Color</u></span>
+            <textarea style='width:800px; height:100px;' type='text' id='colors' value=''>ff0000,00ff00,0000ff,ff0000,00ff00,0000ff,ff0000,00ff00,0000ff,ff0000,00ff00,0000ff,ff0000,00ff00,0000ff,000000</textarea>
+        </div>
+        <div style='margin-top:6px'>
+
+            <p style='width:800px; margin-left: 150px;'>The color list is used for some of the effects (STATIC, FADE,
+                METEOR) to define the
+                LED colors. It has to contain a comma separated list of HEX color values (e.g. ffffff,00ff00,000000).
+                If less values are set than LEDS are available the remaining leds are set to the last color. This
+                allows to set all LEDs to s asingle color by simply passing a single value.</p>
+        </div>
+        <div style='margin-top:6px'>
+            <span style='float:left; vertical-align: top; width: 115px; margin-left:35px;'><u>Speed</u></span>
+            <input style='width:800px;' type='text' id='speed' value='9' />
+        </div>
+        <div style='margin-top:6px'>
+            <p style='width:800px; margin-left: 150px;'>The speed of the animation. Valid values are between 1 and 19.</p>
+        </div>
+
+
+        <div style='margin-top:10px; '><b>Modus</b></div>
+        <div style='margin-left:35px; margin-top: 6px; margin-left: 150px;'>
+            <button style='width:200px' onclick='off()'>OFF</button>
+            <button style='width:200px' onclick='rainbow()'>RAINBOW</button>
+            <button style='width:200px' onclick='fire()'>FIRE</button>
+        </div>
+
+        <div style='margin-left:35px; margin-top: 6px; margin-left: 150px;'>
+            <button style='width:200px' onclick='static()'>STATIC</button>
+            <button style='width:200px' onclick='fade()'>FADE</button>
+            <button style='width:200px' onclick='meteor()'>METEOR</button>
+        </div>
+
+        <div style='margin-left:35px; margin-top: 6px; margin-left: 150px;'>
+            <button style='width:200px' onclick='theater()'>THEATER</button>
+            <button style='width:200px' onclick='sparkle()'>SPARKLE</button>
+        </div>
+    </div>
+
+    </div>
+
+    <script>
+        let domain = 'http://192.168.2.106/led/'
+
+        function sendRequest(url) {
+            console.log("Send request to ::= " + url);
+            var xmlHttp = new
+                XMLHttpRequest();
+            xmlHttp.open("GET", url, true);
+            xmlHttp.send();
+        }
+
+        function off() {
+            sendRequest(domain + "off");
+        }
+
+        function rainbow() {
+            let speed = document.getElementById('speed').value;
+            sendRequest(domain + "rainbow?speed=" + speed);
+        }
+
+        function fire() {
+            let speed = document.getElementById('speed').value;
+            sendRequest(domain + "fire?speed=" + speed);
+        }
+
+        function static() {
+            let colors = document.getElementById('colors').value;
+
+            sendRequest(domain + "static?colors=" + colors);
+        }
+
+        function fade() {
+            let colors = document.getElementById('colors').value;
+            let speed = document.getElementById('speed').value;
+            sendRequest(domain + "fade?colors=" + colors + "&speed=" + speed);
+        }
+
+        function meteor() {
+            let colors = document.getElementById('colors').value;
+            let speed = document.getElementById('speed').value;
+            sendRequest(domain + "meteor?colors=" + colors + "&speed=" + speed);
+        }
+
+        function theater() {
+            let colors = document.getElementById('colors').value;
+            let speed = document.getElementById('speed').value;
+            sendRequest(domain + "theater?colors=" + colors + "&speed=" + speed);
+        }
+
+        function sparkle() {
+            let colors = document.getElementById('colors').value;
+            let speed = document.getElementById('speed').value;
+            sendRequest(domain + "sparkle?colors=" + colors + "&speed=" + speed);
+        }
+
+    </script>
+
+</body>
+
+
+</html>
