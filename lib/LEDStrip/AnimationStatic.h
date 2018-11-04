@@ -9,7 +9,7 @@ class AnimationStatic : public Animation {
    * Constructor
    */
   AnimationStatic(Adafruit_NeoPixel* strip)
-      : Animation(strip, STATIC, "static"){};
+      : Animation(strip, STATIC, "Static", STRIP, "Strip", "static"){};
 
   /**
    * Resets the animation to the initial values.

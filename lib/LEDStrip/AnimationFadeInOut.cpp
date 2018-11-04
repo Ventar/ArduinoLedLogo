@@ -23,18 +23,19 @@ void AnimationFadeInOut::process() {
 
   show();
 
+  Serial.println(counter);
+
   if (mode == UP) {
     counter++;
 
-    if (counter >= 255) {
+    if (counter == 255) {
       mode = DOWN;
       counter = 255;
     }
   } else {
     counter -= 1;
-    if (counter < 0) {
+    if (counter == 0) {
       mode = UP;
-      counter = 0;
     }
   }
 }

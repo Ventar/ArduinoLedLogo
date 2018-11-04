@@ -1,12 +1,21 @@
 #include <Animation.h>
 
-Animation::Animation(Adafruit_NeoPixel* strip, LEDAnimation mode, String path) {
+/**
+ * Names of the LED animation modes
+ */
+
+Animation::Animation(Adafruit_NeoPixel* strip, LEDAnimation mode, String name,
+                     LEDUsage usage, String ledUsageName, String path) {
   this->strip = strip;
   this->path = path;
   this->data = new SceneData();
 
   data->mode = mode;
-  data->delay = DEFAULT_DELAY;
+  data->speed = DEFAULT_SPEED;
+  data->delay = MAX_DELAY - (MAX_DELAY * DEFAULT_SPEED / 100);
+  data->modeName = name;
+  data->ledUsageName = ledUsageName;
+  data->usage = usage;
   data->colors = new uint32_t[strip->numPixels()];
   for (int i = 0; i < strip->numPixels(); i++) {
     data->colors[i] = 0;
@@ -18,8 +27,6 @@ void Animation::reset() { counter = 0; }
 String Animation::getPath() { return path; }
 
 SceneData* Animation::getSceneData() { return data; }
-
-LEDAnimation Animation::getMode() { return data->mode; }
 
 // Set a LED color (not yet visible)
 void Animation::setPixel(int Pixel, uint32_t color) {
@@ -65,6 +72,12 @@ void Animation::setColorListFromString(String colorList) {
     lastColor = newColor;
     data->colors[i] = lastColor;
   }
+  debug(
+      "Animation::setColorListFromString - Status mode ::=[%s], delay ::= "
+      "[%d], speed ::= [%d], "
+      "colors ::= [%s]",
+      data->modeName.c_str(), data->delay, data->speed,
+      getColorListAsString().c_str());
 }
 
 String Animation::getColorListAsString() {
@@ -80,9 +93,18 @@ String Animation::getColorListAsString() {
   return matrix;
 }
 
-void Animation::setDelay(int delay) {
+void Animation::setSpeed(int speed) {
   tick = 0;
-  data->delay = delay;
+  data->speed = speed;
+  data->delay = MAX_DELAY - (MAX_DELAY * speed / 100);
+  if (data->delay == 0) {
+    data->delay = 1;
+  }
+  debug(
+      "Animation::setSpeed - Status mode ::=[%s], delay ::= [%d], speed ::= "
+      "[%d], colors ::= [%s]",
+      data->modeName.c_str(), data->delay, data->speed,
+      getColorListAsString().c_str());
 }
 
 void Animation::update() {

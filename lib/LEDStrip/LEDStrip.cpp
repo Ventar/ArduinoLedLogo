@@ -1,12 +1,6 @@
 #include <LEDStrip.h>
 
-static const char* LEDAnimationNames[] = {
-    "OFF",  "RAINBOW",     "FADE_IN_OUT",   "STATIC",
-    "FIRE", "METEOR_RAIN", "THEATER_CHASE", "SPARKLE"};
-
 LEDStrip::LEDStrip() {}
-
-String LEDStrip::getModeName() { return LEDAnimationNames[mode]; }
 
 void LEDStrip::setup() {
   this->animations = new Animation*[getAnimationsCount()];
@@ -25,36 +19,40 @@ void LEDStrip::setup() {
 
 uint8_t LEDStrip::getAnimationsCount() { return 8; }
 
-LEDAnimation LEDStrip::getMode() { return mode; }
-
-void LEDStrip::setMode(LEDAnimation mode, String colors, uint16_t delay) {
+void LEDStrip::setMode(LEDAnimation mode, String colors, String speed) {
   for (int i = 0; i < getAnimationsCount(); i++) {
-    if (animations[i]->getMode() == mode) {
+    if (animations[i]->getSceneData()->mode == mode) {
       this->mode = mode;
-      debug("LEDStrip: Set mode to ::=[%s], delay ::= [%d], colors ::= [%s]",
-            getModeName().c_str(), delay, colors.c_str());
 
-      if (colors != "null") {
+      if (colors != "") {
         animations[i]->setColorListFromString(colors);
       }
 
-      if (delay != 0) {
-        animations[i]->setDelay(delay);
+      if (speed != "") {
+        animations[i]->setSpeed(speed.toInt());
       }
+
+      debug(
+          "LEDStrip::setMode - Status mode ::=[%s], delay ::= [%d], speed ::= "
+          "[%d], colors ::= [%s]",
+          animations[i]->getSceneData()->modeName.c_str(),
+          animations[i]->getSceneData()->delay,
+          animations[i]->getSceneData()->speed, colors.c_str());
+
       animations[i]->reset();
     }
   }
 }
 
 void LEDStrip::setMode(LEDAnimation mode, String colors) {
-  setMode(mode, colors, 0);
+  setMode(mode, colors, "");
 }
 
-void LEDStrip::setMode(LEDAnimation mode) { setMode(mode, "null", 0); }
+void LEDStrip::setMode(LEDAnimation mode) { setMode(mode, "", ""); }
 
 void LEDStrip::loop() {
   for (int i = 0; i < getAnimationsCount(); i++) {
-    if (animations[i]->getMode() == mode) {
+    if (animations[i]->getSceneData()->mode == mode) {
       animations[i]->update();
     }
   }
@@ -62,7 +60,7 @@ void LEDStrip::loop() {
 
 Animation* LEDStrip::getAnimation() {
   for (int i = 0; i < getAnimationsCount(); i++) {
-    if (animations[i]->getMode() == mode) {
+    if (animations[i]->getSceneData()->mode == mode) {
       return animations[i];
     }
   }

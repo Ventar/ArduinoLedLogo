@@ -29,7 +29,7 @@ class LEDWebServer {
   void loop();
 
  private:
-  String createInfoMessage();
+  void streamStatus();
 
   /**
    * Method to handle an incoming request

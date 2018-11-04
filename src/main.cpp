@@ -20,7 +20,8 @@ uint16_t bStateD;
 
 void setup() {
   Serial.begin(115200);
-  debugln("\n\nLogo started, execute setup...");
+  debugln("\n\nMain: Logo started, execute setup...");
+  debugln("Main: -------------------------------------------------------");
 
   strip.setup();
   storage.setup();
@@ -39,7 +40,8 @@ void setup() {
 #endif
 
   strip.setMode(OFF);
-  debugln("Setup finished...");
+  debugln("Main: Setup finished...");
+  debugln("Main: -------------------------------------------------------");
 }
 
 void loop() {

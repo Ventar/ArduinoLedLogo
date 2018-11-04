@@ -12,7 +12,7 @@ class AnimationSparkle : public Animation {
    * Constructor.
    */
   AnimationSparkle(Adafruit_NeoPixel* strip)
-      : Animation(strip, SPARKLE, "sparkle") {
+      : Animation(strip, SPARKLE, "Sparkle", STRIP, "Strip", "sparkle") {
     memory = new uint8_t[45]{0};
   };
 

@@ -8,7 +8,8 @@ class AnimationOff : public Animation {
   /**
    * Constructor
    */
-  AnimationOff(Adafruit_NeoPixel* strip) : Animation(strip, OFF, "off"){};
+  AnimationOff(Adafruit_NeoPixel* strip)
+      : Animation(strip, OFF, "Off", NONE, "None", "off"){};
 
   /**
    * Resets the animation to the initial values.

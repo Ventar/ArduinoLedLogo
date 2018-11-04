@@ -3,7 +3,7 @@
 
 void AnimationMeteorRain::reset() {
   setAll(0, 0, 0);
-  if (strip->getPixelColor(0) == 0) {
+  if (data->colors[0] == 0) {
     setColorListFromString("000044");
   }
   counter = 0;
@@ -37,9 +37,9 @@ void AnimationMeteorRain::process() {
         g = (oldColor & 0x0000ff00UL) >> 8;
         b = (oldColor & 0x000000ffUL);
 
-        r = (r <= 10) ? 0 : (int)r - (r * meteorRandomDecay / 256);
-        g = (g <= 10) ? 0 : (int)g - (g * meteorRandomDecay / 256);
-        b = (b <= 10) ? 0 : (int)b - (b * meteorRandomDecay / 256);
+        r = (r <= 10) ? 0 : (int)(r - (r * meteorTrailDecay / 256));
+        g = (g <= 10) ? 0 : (int)(g - (g * meteorTrailDecay / 256));
+        b = (b <= 10) ? 0 : (int)(b - (b * meteorTrailDecay / 256));
 
         strip->setPixelColor(j, r, g, b);
       }

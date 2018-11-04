@@ -19,6 +19,24 @@ enum LEDAnimation {
 };
 
 /**
+ * Defines if the animation uses the custome LED colors.
+ */
+enum LEDUsage {
+  /**
+   * The animation does not need additional color info.
+   */
+  NONE,
+  /**
+   * The animation takes only a single color.
+   */
+  SINGLE,
+  /**
+   * The animation uses the individual colors of the strip.
+   */
+  STRIP
+};
+
+/**
  * Comination of data fields that make a scene displayed by the logo.
  */
 struct SceneData {
@@ -30,7 +48,12 @@ struct SceneData {
   /**
    * The delay to wait before the next step of the animation happens.
    */
-  uint16_t delay = DEFAULT_DELAY;
+  uint16_t delay;
+
+  /**
+   * The speed of the animation in percent relative to the delay.
+   */
+  uint16_t speed = DEFAULT_SPEED;
 
   /**
    * The colors managed by the static animation. This class has to remember to
@@ -38,6 +61,21 @@ struct SceneData {
    * running.
    */
   uint32_t* colors;
+
+  /**
+   * Name of the mode.
+   */
+  String modeName;
+
+  /**
+   * The LED usage of the scene.
+   */
+  LEDUsage usage;
+
+  /**
+   * Name of the led usage.
+   */
+  String ledUsageName;
 };
 
 /**
@@ -49,7 +87,8 @@ class Animation {
   /**
    * Constructor.
    */
-  Animation(Adafruit_NeoPixel* strip, LEDAnimation mode, String path);
+  Animation(Adafruit_NeoPixel* strip, LEDAnimation mode, String name,
+            LEDUsage usage, String ledUsageName, String path);
 
   /**
    * The delay value that is used to decide if the process() method is
@@ -59,7 +98,7 @@ class Animation {
    * Arduino framework which is needed to handle buttos and HTTP requests for
    * example.
    */
-  void setDelay(int delay);
+  void setSpeed(int speed);
 
   /**
    * Update method called for every cycle of the loop method. Based on the delay
@@ -103,17 +142,17 @@ class Animation {
   String getPath();
 
   /**
-   * Returns the mode that is represented by this animtaion.
-   */
-  LEDAnimation getMode();
-
-  /**
    * Returns the current scene data representing this animation.
    */
   SceneData* getSceneData();
 
  protected:
   uint16_t counter = 0;
+
+  /**
+   * The LED usage of the animation.
+   */
+  LEDUsage ledUsage = STRIP;
 
   /**
    * Comination of data fields that make a scene displayed by the logo.

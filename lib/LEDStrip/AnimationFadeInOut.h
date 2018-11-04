@@ -17,7 +17,7 @@ class AnimationFadeInOut : public Animation {
    * Constructor.
    */
   AnimationFadeInOut(Adafruit_NeoPixel* strip)
-      : Animation(strip, FADE_IN_OUT, "fade"){};
+      : Animation(strip, FADE_IN_OUT, "Fade In Out", STRIP, "Strip", "fade"){};
 
   /**
    * Resets the animation to the initial values.

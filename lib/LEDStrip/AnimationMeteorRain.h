@@ -12,7 +12,8 @@ class AnimationMeteorRain : public Animation {
    * Constructor
    */
   AnimationMeteorRain(Adafruit_NeoPixel* strip)
-      : Animation(strip, METEOR_RAIN, "meteor"){};
+      : Animation(strip, METEOR_RAIN, "Meteor Rain", SINGLE, "Single",
+                  "meteor"){};
 
   /**
    * Resets the animation to the initial values.

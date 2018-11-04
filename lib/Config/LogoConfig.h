@@ -28,7 +28,7 @@
 #define NUMBER_OF_PIXELS 45
 
 // Default delay for the animation
-#define DEFAULT_DELAY 1000
+#define DEFAULT_SPEED 50
 #define MAX_DELAY 20000
 
 #define HTTP_LED_CONTROL_PREFIX "/led"

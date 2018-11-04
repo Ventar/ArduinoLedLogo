@@ -47,17 +47,7 @@ class LEDStrip {
    * Set the mode of the LED strip. The mode defines if the strip is off,
    * displays single colors or special effects.
    */
-  void setMode(LEDAnimation mode, String colors, uint16_t delay);
-
-  /**
-   * Returns the mode in which the LED strip is currently running.
-   */
-  LEDAnimation getMode();
-
-  /**
-   * Returns the mode name in which the LED strip is currently running.
-   */
-  String getModeName();
+  void setMode(LEDAnimation mode, String colors, String speed);
 
   /**
    * Returns the animation object of the currently active animation.
