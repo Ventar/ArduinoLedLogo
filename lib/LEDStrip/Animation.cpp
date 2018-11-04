@@ -100,11 +100,6 @@ void Animation::setSpeed(int speed) {
   if (data->delay == 0) {
     data->delay = 1;
   }
-  debug(
-      "Animation::setSpeed - Status mode ::=[%s], delay ::= [%d], speed ::= "
-      "[%d], colors ::= [%s]",
-      data->modeName.c_str(), data->delay, data->speed,
-      getColorListAsString().c_str());
 }
 
 void Animation::update() {

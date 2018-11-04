@@ -17,6 +17,11 @@ class LogoStorage {
   void storeScene(String name);
 
   /**
+   * Deletes the scene with the given name from file system (SPIFFS).
+   */
+  void deleteScene(String name);
+
+  /**
    * Loads the current scene of the device in the memory (SPIFFS).
    */
   void loadScene(String name);
@@ -38,6 +43,7 @@ class LogoStorage {
 
  private:
   LEDStrip* strip;
+  uint8_t numberOfScenes = 0;
 };
 
 #endif

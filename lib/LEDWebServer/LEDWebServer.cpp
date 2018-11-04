@@ -89,7 +89,27 @@ boolean LEDWebServer::handleAnimation(Animation* animation) {
   return false;
 }
 
-boolean LEDWebServer::handleStore() { return false; }
+boolean LEDWebServer::handleScenes() {
+  const String uri = server->uri();
+  const String name = server->arg("name");
+  if (uri.equals(String(HTTP_LED_CONTROL_PREFIX) + "/scene/add") &&
+      name != "") {
+    storage->storeScene(name);
+    streamStatus();
+    return true;
+  } else if (uri.equals(String(HTTP_LED_CONTROL_PREFIX) + "/scene/remove") &&
+             name != "") {
+    storage->deleteScene(name);
+    streamStatus();
+    return true;
+  } else if (uri.equals(String(HTTP_LED_CONTROL_PREFIX) + "/scene/set") &&
+             name != "") {
+    storage->loadScene(name);
+    streamStatus();
+    return true;
+  }
+  return false;
+}
 
 void LEDWebServer::handleRequest() {
   server->sendHeader("Access-Control-Allow-Origin", "*");
@@ -107,7 +127,7 @@ void LEDWebServer::handleRequest() {
     }
   }
 
-  responseSend = responseSend || handleStore();
+  responseSend = responseSend || handleScenes();
 
   if (!responseSend) {
     String path = uri;

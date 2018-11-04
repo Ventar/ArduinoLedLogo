@@ -43,10 +43,10 @@ class LEDWebServer {
   boolean handleAnimation(Animation* animation);
 
   /**
-   * Utility method to check if an icoming request wants to store the current
-   * logo scene or data.
+   * Utility method to check if an icoming request wants to manage scenes for
+   * the logo.
    */
-  boolean handleStore();
+  boolean handleScenes();
 
   /**
    * Reference to the storage class to store the crrent scene in the SPIFFS.
