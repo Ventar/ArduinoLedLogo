@@ -27,14 +27,23 @@ class LogoButton {
   void loop();
 
   /**
-   * Stores the current scene of the device in the memory (SPIFFS).
+   Assigns a scene to the button and stores it in the file system (SPIFFS).
    */
-  void storeScene();
+  void assignScene(String scene);
 
   /**
-   * Loads the current scene of the device in the memory (SPIFFS).
+   * Assigns a scene to the button without saving it.
    */
-  void loadScene();
+  void setScene(String scene);
+  /**
+   * Returns the name of button.
+   */
+  String getName();
+
+  /**
+   * Returns the name of the assigned scene for this button.
+   */
+  String getSceneName();
 
  private:
   /**
@@ -52,6 +61,11 @@ class LogoButton {
    * data.
    */
   String name;
+
+  /**
+   * The name of scene that is assigned to the button.
+   */
+  String sceneName = "Off";
 
   /**
    * The PIN used for the button.

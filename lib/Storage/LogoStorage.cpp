@@ -35,6 +35,36 @@ void LogoStorage::storeScene(String name) {
   f.close();
 }
 
+void LogoStorage::storeSceneForButton(String buttonName, String sceneName) {
+  String filename = "button_" + buttonName;
+  File f = SPIFFS.open("/" + filename, "w");
+  if (!f) {
+    debug(
+        "LogoStorage::storeSceneForButton - Cannot open file ::= [%s] to write",
+        filename.c_str());
+    return;
+  }
+
+  f.print(sceneName + "\n");
+
+  f.close();
+}
+
+String LogoStorage::loadSceneForButton(String buttonName) {
+  String filename = "button_" + buttonName;
+  File f = SPIFFS.open("/" + filename, "r");
+  if (!f) {
+    debug("LogoStorage::loadSceneForButton - Cannot open file ::= [%s] to read",
+          filename.c_str());
+    return "Off";
+  }
+  String sceneName = f.readStringUntil('\n');
+
+  f.close();
+
+  return sceneName;
+}
+
 void LogoStorage::loadScene(String name) {
   String filename = "scene_" + name;
   File f = SPIFFS.open("/" + filename, "r");

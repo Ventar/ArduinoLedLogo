@@ -27,6 +27,16 @@ class LogoStorage {
   void loadScene(String name);
 
   /**
+   * Loads the configuration for the given button.
+   */
+  String loadSceneForButton(String buttonName);
+
+  /**
+   * Stores the configuration for the given button.
+   */
+  void storeSceneForButton(String buttonName, String sceneName);
+
+  /**
    * Open a file from the internal storage in read only mode.
    */
   File open(String name);

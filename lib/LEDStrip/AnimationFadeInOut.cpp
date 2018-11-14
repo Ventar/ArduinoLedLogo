@@ -23,8 +23,6 @@ void AnimationFadeInOut::process() {
 
   show();
 
-  Serial.println(counter);
-
   if (mode == UP) {
     counter++;
 

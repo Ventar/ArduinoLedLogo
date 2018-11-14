@@ -6,10 +6,12 @@
 
 ESP8266WebServer espServer(80);
 
-LEDWebServer::LEDWebServer(LEDStrip* strip, LogoStorage* storage) {
+LEDWebServer::LEDWebServer(LEDStrip* strip, LogoStorage* storage,
+                           LogoButton** buttons) {
   this->server = &espServer;
   this->strip = strip;
   this->storage = storage;
+  this->buttons = buttons;
 }
 
 void LEDWebServer::streamStatus() {
@@ -33,6 +35,21 @@ void LEDWebServer::streamStatus() {
         String(HTTP_LED_CONTROL_PREFIX) + "/" + animations[i]->getPath();
   }
 
+  JsonArray& buttons = root.createNestedArray("buttons");
+  for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
+    JsonObject& btn = buttons.createNestedObject();
+    btn["name"] = this->buttons[i]->getName();
+    btn["scene"] = this->buttons[i]->getSceneName();
+  }
+
+  JsonArray& scenes = root.createNestedArray("scenes");
+  Dir dir = SPIFFS.openDir("/");
+  while (dir.next()) {
+    if (dir.fileName().startsWith("/scene_")) {
+      scenes.add(dir.fileName().substring(7));
+    }
+  }
+
   JsonArray& colors = root.createNestedArray("colors");
 
   for (int i = 0; i < NUMBER_OF_PIXELS; i++) {
@@ -48,7 +65,7 @@ void LEDWebServer::streamStatus() {
   JsonObject& fileSystem = root.createNestedObject("filesystem");
   JsonArray& files = fileSystem.createNestedArray("files");
 
-  Dir dir = SPIFFS.openDir("/");
+  dir = SPIFFS.openDir("/");
   while (dir.next()) {
     numerOfFiles++;
     totalSize += dir.fileSize();
@@ -56,6 +73,7 @@ void LEDWebServer::streamStatus() {
     file["name"] = dir.fileName();
     file["size"] = dir.fileSize();
   }
+
   fileSystem["count"] = numerOfFiles;
   fileSystem["size"] = totalSize;
   fileSystem["total"] = 4 * 1024 * 1024;
@@ -104,10 +122,33 @@ boolean LEDWebServer::handleScenes() {
     return true;
   } else if (uri.equals(String(HTTP_LED_CONTROL_PREFIX) + "/scene/set") &&
              name != "") {
-    storage->loadScene(name);
+    if (name == "Off") {
+      strip->setMode(OFF);
+    } else {
+      storage->loadScene(name);
+    }
+
     streamStatus();
     return true;
   }
+  return false;
+}
+
+boolean LEDWebServer::handleButtons() {
+  const String uri = server->uri();
+  const String buttonName = server->arg("button");
+  const String sceneName = server->arg("scene");
+  if (uri.equals(String(HTTP_LED_CONTROL_PREFIX) + "/button/assign") &&
+      buttonName != "" && sceneName != "") {
+    for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
+      if (buttons[i]->getName() == buttonName) {
+        buttons[i]->assignScene(sceneName);
+      }
+    }
+    streamStatus();
+    return true;
+  }
+
   return false;
 }
 
@@ -127,7 +168,7 @@ void LEDWebServer::handleRequest() {
     }
   }
 
-  responseSend = responseSend || handleScenes();
+  responseSend = responseSend || handleScenes() || handleButtons();
 
   if (!responseSend) {
     String path = uri;
@@ -138,11 +179,7 @@ void LEDWebServer::handleRequest() {
     }
 
     if (uri == "/") {
-      path = "index.htm";
-    }
-
-    if (uri == "/info") {
-      path = "info.htm";
+      path = "/index.htm";
     }
 
     if (!storage->exists(path)) {

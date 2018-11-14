@@ -57,8 +57,8 @@ function renderColorCard() {
                 setText: false,
                 setBGColor: false,
                 notation: 'hex',
-                hues: 6,
-                saturations: 1,
+                hues: 8,
+                saturations: 3,
                 shades: 4,
                 className: 'dark-picker'
             });
@@ -114,10 +114,27 @@ function renderSpeedCard() {
 }
 
 /**
- * Render the SCENE card.
+ * Render the PROGRAMABLE SCENE card.
  * -------------------------------------------------------------------------------------------------------------------------------------------
  */
-function renderSceneCard() {
+function renderProgramableSceneCard() {
+
+}
+
+/**
+ * Loads the available scenes and displays it on the scenes tab.
+ */
+function renderSceneCards() {
+
+    $('#sscSceneContent').empty();
+
+    $('#sscSceneContent').append('<button type="button" class="btn-info list-group-item list-group-item-action" onclick="loadScene(\'Off\')">Off</button>');
+
+    for (var i = 0; i < data.scenes.length; i++) {
+        $('#sscSceneContent').append('<button type="button" class="bg-primary list-group-item list-group-item-action" onclick="loadScene(\'' + data.scenes[i] + '\')">' + data.scenes[i] + '</button>');
+    }
+
+
     $('#scSceneSelect').empty();
 
     $('#scSceneButtonRemove').hide();
@@ -125,24 +142,54 @@ function renderSceneCard() {
 
     $('#scSceneSelect').append('<option selected="">Select a scene...</option>');
 
-    for (var i = 0; i < data.filesystem.files.length; i++) {
-        var name = data.filesystem.files[i].name;
-        if (name.startsWith("/scene_")) {
-            name = name.substring(7);
-            $('#scSceneSelect').append('<option value="' + name + '">' + name + '</option>');
-        }
+    for (var i = 0; i < data.scenes.length; i++) {
+        $('#scSceneSelect').append('<option value="' + data.scenes[i] + '">' + data.scenes[i] + '</option>');
     }
+
+    $('#scButtonsContent').empty();
+
+    for (var i = 0; i < data.buttons.length; i++) {
+        var element = '<li class="list-group-item flex-column align-items-start">';
+        element += '<div class="d-flex w-100 justify-content-between">';
+        element += '<h5 class="pt-2 mr-3">Button ' + data.buttons[i].name + '</h5>';
+        element += '<select id="scButtonSelector' + data.buttons[i].name + '" class="custom-select bg-secondary" style="color: #ffffff; width:60%;" onchange="changeButtonAssignment(\'' + data.buttons[i].name + '\')">';
+
+        if (data.buttons[i].scene == 'Off') {
+            element += '<option value="Off" selected="">Off</option>';
+        } else {
+            element += '<option value="Off">Off</option>';
+        }
+
+
+        for (var j = 0; j < data.scenes.length; j++) {
+            if (data.buttons[i].scene == data.scenes[j]) {
+                element += '<option value="' + data.scenes[j] + '" selected="">' + data.scenes[j] + '</option>';
+            } else {
+                element += '<option value="' + data.scenes[j] + '">' + data.scenes[j] + '</option>';
+            }
+        }
+
+        element += '</select></div></li>';
+        $('#scButtonsContent').append(element);
+    }
+
+
+
+
 }
+
 
 /**
  * Updates the page from the JSON data structure send by the logo.
  */
 function updatePage() {
 
+    renderSceneCards();
     renderModeCard();
     renderColorCard();
     renderSpeedCard();
-    renderSceneCard();
+    renderProgramableSceneCard();
+
 
 
 

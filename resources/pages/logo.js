@@ -2,6 +2,27 @@ var domain = 'http://192.168.2.106';
 var data;
 var lastColor;
 
+
+/**
+ * Changes the displayed page.
+  */
+function showPage(page) {
+
+    $('#navScenes').removeClass('active');
+    $('#navProgram').removeClass('active');
+
+    if (page == 'scenes') {
+        $('#navScenes').addClass('active');
+        $('#scenesCards').show();
+        $('#programCards').hide();
+
+    } else if (page == 'program') {
+        $('#navProgram').addClass('active')
+        $('#scenesCards').hide();
+        $('#programCards').show();
+    }
+}
+
 /**
  * Sends a request to the logo to update it.
  */
@@ -86,11 +107,16 @@ function changeSelectedScene() {
     }
 }
 
-function loadScene() {
-    var scene = $('#scSceneSelect option:selected').text();
+function loadScene(scene) {
+    if (!scene) {
+        scene = $('#scSceneSelect option:selected').text();
+    }
     sendRequestToLogo(domain + '/led/scene/set' + '?name=' + scene);
 }
 
+/**
+ * Adds a new scene.
+ */
 function addScene() {
     var sceneName = $('#scSceneModalAddName').val();
     var errorText = '';
@@ -117,7 +143,18 @@ function addScene() {
 
 }
 
+/**
+ * Removes an existing scene.
+ */
 function removeScene() {
     var scene = $('#scSceneSelect option:selected').text();
     sendRequestToLogo(domain + '/led/scene/remove' + '?name=' + scene);
+}
+
+/**
+*  Assigns a new scene to a button.
+*/
+function changeButtonAssignment(button) {
+    var scene = $('#scButtonSelector' + button + ' option:selected').text();
+    sendRequestToLogo(domain + '/led/button/assign?button=' + button + '&scene=' + scene);
 }

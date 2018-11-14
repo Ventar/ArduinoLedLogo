@@ -1,6 +1,22 @@
 #ifndef LogoConfig_h
 #define LogoConfig_h
 
+//  Debugging configuration
+// -----------------------------------------
+
+#define DEBUG
+
+#ifdef DEBUG
+
+#define debug(x, ...) \
+  Serial.printf((String(x) + String("\n")).c_str(), __VA_ARGS__);
+#define debugln(x) Serial.printf((String(x) + String("\n")).c_str());
+
+#else
+#define debugln(x)
+#define debug(x, ...)
+#endif
+
 //  Controls the WIFI settings for the Logo.
 // ------------------------------------------------------------------------------------
 
@@ -21,9 +37,9 @@
 // setting to true will enable debugging information for the WiFiManage libary.
 #define WIFI_DEBUG false
 
-/**
- * Global configuration for the used NeoPixel strip of the logo
- */
+//
+// Global configuration for the used NeoPixel strip of the logo
+// ------------------------------------------------------------------------------------
 #define NEOPIXEL_PIN D3
 #define NUMBER_OF_PIXELS 45
 
@@ -33,22 +49,7 @@
 
 #define HTTP_LED_CONTROL_PREFIX "/led"
 
-#define BUTTON_A D5
-#define BUTTON_B D6
-#define BUTTON_C D7
-#define BUTTON_D D8
-
-#define DEBUG
-
-#ifdef DEBUG
-
-#define debug(x, ...) \
-  Serial.printf((String(x) + String("\n")).c_str(), __VA_ARGS__);
-#define debugln(x) Serial.printf((String(x) + String("\n")).c_str());
-
-#else
-#define debugln(x)
-#define debug(x, ...)
-#endif
+#define NUMBER_OF_BUTTONS 4
+static const uint8_t BUTTON_PINS[NUMBER_OF_BUTTONS] = {D7, D5, D6, D8};
 
 #endif

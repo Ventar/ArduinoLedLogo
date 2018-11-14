@@ -2,21 +2,20 @@
 
 #include <LEDStrip.h>
 #include <LEDWebServer.h>
+#include <LogoButton.h>
 #include <LogoConfig.h>
 #include <LogoStorage.h>
 #include <WiFiConnect.h>
 
-LEDStrip strip = LEDStrip();
-LogoStorage storage = LogoStorage(&strip);
-LEDWebServer ledWebServer = LEDWebServer(&strip, &storage);
 #ifdef WIFI_ENABLE
 WiFiConnect wifiConnection(WIFI_NAME, WIFI_PASSWORD);
 #endif
 
-uint16_t bStateA;
-uint16_t bStateB;
-uint16_t bStateC;
-uint16_t bStateD;
+LEDStrip strip = LEDStrip();
+LogoStorage storage = LogoStorage(&strip);
+
+LogoButton* buttons[NUMBER_OF_BUTTONS];
+LEDWebServer ledWebServer = LEDWebServer(&strip, &storage, buttons);
 
 void setup() {
   Serial.begin(115200);
@@ -26,10 +25,11 @@ void setup() {
   strip.setup();
   storage.setup();
 
-  pinMode(BUTTON_A, INPUT);
-  pinMode(BUTTON_B, INPUT);
-  pinMode(BUTTON_C, INPUT);
-  pinMode(BUTTON_D, INPUT);
+  for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
+    buttons[i] =
+        new LogoButton(String(char(65 + i)), BUTTON_PINS[i], &strip, &storage);
+    buttons[i]->setup();
+  }
 
 #ifdef WIFI_ENABLE
   strip.setMode(STATIC, "550000");
@@ -48,33 +48,7 @@ void loop() {
   strip.loop();
   ledWebServer.loop();
 
-  bStateA = digitalRead(BUTTON_A);
-  bStateB = digitalRead(BUTTON_B);
-  bStateC = digitalRead(BUTTON_C);
-  bStateD = digitalRead(BUTTON_D);
-
-  if (bStateA == HIGH) {
-    Serial.println("Button A pressed...");
-    strip.setMode(FIRE);
-    delay(1000);
-  }
-
-  if (bStateB == HIGH) {
-    Serial.println("Button B pressed...");
-    strip.setMode(RAINBOW);
-    delay(1000);
-  }
-
-  if (bStateC == HIGH) {
-    Serial.println("Button C pressed...");
-    strip.setMode(STATIC, "005500");
-
-    delay(1000);
-  }
-
-  if (bStateD == HIGH) {
-    Serial.println("Button D pressed...");
-    strip.setMode(OFF);
-    delay(1000);
+  for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
+    buttons[i]->loop();
   }
 }
