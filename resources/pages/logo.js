@@ -1,4 +1,5 @@
-var domain = 'http://192.168.2.106';
+//var domain = 'http://192.168.2.106';
+var domain = '';
 var data;
 var lastColor;
 

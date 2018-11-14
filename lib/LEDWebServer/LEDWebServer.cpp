@@ -179,7 +179,7 @@ void LEDWebServer::handleRequest() {
     }
 
     if (uri == "/") {
-      path = "/index.htm";
+      path = "/index.html";
     }
 
     if (!storage->exists(path)) {
