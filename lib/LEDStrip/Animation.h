@@ -5,46 +5,9 @@
 #include <LogoConfig.h>
 
 /**
- * The available LED animation modes.
- */
-enum LEDAnimation {
-  OFF,
-  RAINBOW,
-  FADE_IN_OUT,
-  STATIC,
-  FIRE,
-  METEOR_RAIN,
-  THEATER_CHASE,
-  SPARKLE
-};
-
-/**
- * Defines if the animation uses the custome LED colors.
- */
-enum LEDUsage {
-  /**
-   * The animation does not need additional color info.
-   */
-  NONE,
-  /**
-   * The animation takes only a single color.
-   */
-  SINGLE,
-  /**
-   * The animation uses the individual colors of the strip.
-   */
-  STRIP
-};
-
-/**
  * Comination of data fields that make a scene displayed by the logo.
  */
 struct SceneData {
-  /**
-   * The mode that is represented by this animation.
-   */
-  LEDAnimation mode;
-
   /**
    * The delay to wait before the next step of the animation happens.
    */
@@ -68,11 +31,6 @@ struct SceneData {
   String modeName;
 
   /**
-   * The LED usage of the scene.
-   */
-  LEDUsage usage;
-
-  /**
    * Name of the led usage.
    */
   String ledUsageName;
@@ -87,8 +45,8 @@ class Animation {
   /**
    * Constructor.
    */
-  Animation(Adafruit_NeoPixel* strip, LEDAnimation mode, String name,
-            LEDUsage usage, String ledUsageName, String path);
+  Animation(Adafruit_NeoPixel* strip, String name, String ledUsageName,
+            String path);
 
   /**
    * The delay value that is used to decide if the process() method is
@@ -148,11 +106,6 @@ class Animation {
 
  protected:
   uint16_t counter = 0;
-
-  /**
-   * The LED usage of the animation.
-   */
-  LEDUsage ledUsage = STRIP;
 
   /**
    * Comination of data fields that make a scene displayed by the logo.

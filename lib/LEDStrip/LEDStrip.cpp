@@ -12,17 +12,18 @@ void LEDStrip::setup() {
   animations[5] = new AnimationMeteorRain(&strip);
   animations[6] = new AnimationTheaterChase(&strip);
   animations[7] = new AnimationSparkle(&strip);
+  animations[8] = new AnimationCircle(&strip);
 
   strip.begin();
-  setMode(OFF);
+  setMode("Off");
 }
 
-uint8_t LEDStrip::getAnimationsCount() { return 8; }
+uint8_t LEDStrip::getAnimationsCount() { return 9; }
 
-void LEDStrip::setMode(LEDAnimation mode, String colors, String speed) {
+void LEDStrip::setMode(String modeName, String colors, String speed) {
   for (int i = 0; i < getAnimationsCount(); i++) {
-    if (animations[i]->getSceneData()->mode == mode) {
-      this->mode = mode;
+    if (animations[i]->getSceneData()->modeName == modeName) {
+      this->modeName = modeName;
 
       if (colors != "") {
         animations[i]->setColorListFromString(colors);
@@ -44,15 +45,15 @@ void LEDStrip::setMode(LEDAnimation mode, String colors, String speed) {
   }
 }
 
-void LEDStrip::setMode(LEDAnimation mode, String colors) {
-  setMode(mode, colors, "");
+void LEDStrip::setMode(String modeName, String colors) {
+  setMode(modeName, colors, "");
 }
 
-void LEDStrip::setMode(LEDAnimation mode) { setMode(mode, "", ""); }
+void LEDStrip::setMode(String modeName) { setMode(modeName, "", ""); }
 
 void LEDStrip::loop() {
   for (int i = 0; i < getAnimationsCount(); i++) {
-    if (animations[i]->getSceneData()->mode == mode) {
+    if (animations[i]->getSceneData()->modeName == modeName) {
       animations[i]->update();
     }
   }
@@ -60,7 +61,7 @@ void LEDStrip::loop() {
 
 Animation* LEDStrip::getAnimation() {
   for (int i = 0; i < getAnimationsCount(); i++) {
-    if (animations[i]->getSceneData()->mode == mode) {
+    if (animations[i]->getSceneData()->modeName == modeName) {
       return animations[i];
     }
   }

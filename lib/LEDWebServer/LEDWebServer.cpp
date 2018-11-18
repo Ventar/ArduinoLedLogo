@@ -98,7 +98,7 @@ boolean LEDWebServer::handleAnimation(Animation* animation) {
   const String uri = server->uri();
   if (uri.equals(String(HTTP_LED_CONTROL_PREFIX) + "/" +
                  animation->getPath())) {
-    strip->setMode(animation->getSceneData()->mode, server->arg("colors"),
+    strip->setMode(animation->getSceneData()->modeName, server->arg("colors"),
                    server->arg("speed"));
 
     streamStatus();
@@ -123,7 +123,7 @@ boolean LEDWebServer::handleScenes() {
   } else if (uri.equals(String(HTTP_LED_CONTROL_PREFIX) + "/scene/set") &&
              name != "") {
     if (name == "Off") {
-      strip->setMode(OFF);
+      strip->setMode("Off");
     } else {
       storage->loadScene(name);
     }

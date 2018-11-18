@@ -12,7 +12,7 @@ class AnimationRainbow : public Animation {
    * Constructor.
    */
   AnimationRainbow(Adafruit_NeoPixel* strip)
-      : Animation(strip, RAINBOW, "Rainbow", NONE, "None", "rainbow"){};
+      : Animation(strip, "Rainbow", "None", "rainbow"){};
 
   /**
    * Performs all update operations of the LEDs when the underlying delay is

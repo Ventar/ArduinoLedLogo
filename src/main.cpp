@@ -32,14 +32,14 @@ void setup() {
   }
 
 #ifdef WIFI_ENABLE
-  strip.setMode(STATIC, "550000");
+  strip.setMode("Static", "550000");
   wifiConnection.connect();
   ledWebServer.setup();
-  strip.setMode(STATIC, "005500");
+  strip.setMode("Static", "005500");
   delay(3000);
 #endif
 
-  strip.setMode(OFF);
+  strip.setMode("Off");
   debugln("Main: Setup finished...");
   debugln("Main: -------------------------------------------------------");
 }

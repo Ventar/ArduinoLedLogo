@@ -1,15 +1,15 @@
-#ifndef AnimationOff_h
-#define AnimationOff_h
+#ifndef AnimationCircle_h
+#define AnimationCircle_h
 
 #include <Animation.h>
 
-class AnimationOff : public Animation {
+class AnimationCircle : public Animation {
  public:
   /**
    * Constructor
    */
-  AnimationOff(Adafruit_NeoPixel* strip)
-      : Animation(strip, "Off", "None", "off"){};
+  AnimationCircle(Adafruit_NeoPixel* strip)
+      : Animation(strip, "Circle", "Strip", "circle"){};
 
   /**
    * Resets the animation to the initial values.

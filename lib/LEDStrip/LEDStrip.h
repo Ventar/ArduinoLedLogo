@@ -3,6 +3,7 @@
 #define LEDStrip_h
 
 #include <Adafruit_NeoPixel.h>
+#include <AnimationCircle.h>
 #include <AnimationFadeInOut.h>
 #include <AnimationFire.h>
 #include <AnimationMeteorRain.h>
@@ -35,19 +36,19 @@ class LEDStrip {
    * Set the mode of the LED strip. The mode defines if the strip is off,
    * displays single colors or special effects.
    */
-  void setMode(LEDAnimation mode);
+  void setMode(String modeName);
 
   /**
    * Set the mode of the LED strip. The mode defines if the strip is off,
    * displays single colors or special effects.
    */
-  void setMode(LEDAnimation mode, String colors);
+  void setMode(String modeName, String colors);
 
   /**
    * Set the mode of the LED strip. The mode defines if the strip is off,
    * displays single colors or special effects.
    */
-  void setMode(LEDAnimation mode, String colors, String speed);
+  void setMode(String modeName, String colors, String speed);
 
   /**
    * Returns the animation object of the currently active animation.
@@ -73,7 +74,7 @@ class LEDStrip {
   /**
    * The current mode of the animation.
    */
-  LEDAnimation mode = OFF;
+  String modeName = "Off";
   /**
    * An array with the available animations.
    */

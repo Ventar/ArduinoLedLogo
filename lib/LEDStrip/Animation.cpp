@@ -4,18 +4,16 @@
  * Names of the LED animation modes
  */
 
-Animation::Animation(Adafruit_NeoPixel* strip, LEDAnimation mode, String name,
-                     LEDUsage usage, String ledUsageName, String path) {
+Animation::Animation(Adafruit_NeoPixel* strip, String name, String ledUsageName,
+                     String path) {
   this->strip = strip;
   this->path = path;
   this->data = new SceneData();
-
-  data->mode = mode;
   data->speed = DEFAULT_SPEED;
   data->delay = MAX_DELAY - (MAX_DELAY * DEFAULT_SPEED / 100);
   data->modeName = name;
   data->ledUsageName = ledUsageName;
-  data->usage = usage;
+
   data->colors = new uint32_t[strip->numPixels()];
   for (int i = 0; i < strip->numPixels(); i++) {
     data->colors[i] = 0;

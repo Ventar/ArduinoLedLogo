@@ -13,7 +13,7 @@ void LogoButton::loop() {
     debug("LogoButton::loop - %s pressed, assigned scene ::= [%s] ...",
           name.c_str(), sceneName.c_str());
     if (sceneName == "Off") {
-      strip->setMode(OFF);
+      strip->setMode("Off");
     } else if (storage->exists("/scene_" + sceneName)) {
       storage->loadScene(sceneName);
     } else {

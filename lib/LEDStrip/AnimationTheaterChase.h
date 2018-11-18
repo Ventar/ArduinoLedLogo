@@ -12,8 +12,7 @@ class AnimationTheaterChase : public Animation {
    * Constructor.
    */
   AnimationTheaterChase(Adafruit_NeoPixel* strip)
-      : Animation(strip, THEATER_CHASE, "Theater Chase", STRIP, "Strip",
-                  "theater"){};
+      : Animation(strip, "Theater Chase", "Strip", "theater"){};
 
   /**
    * Resets the animation to the initial values.

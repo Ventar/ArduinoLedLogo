@@ -27,7 +27,6 @@ void LogoStorage::storeScene(String name) {
   }
 
   f.println(name);
-  f.println(strip->getAnimation()->getSceneData()->mode);
   f.println(strip->getAnimation()->getSceneData()->modeName);
   f.println(strip->getAnimation()->getSceneData()->speed);
   f.println(strip->getAnimation()->getColorListAsString());
@@ -74,20 +73,18 @@ void LogoStorage::loadScene(String name) {
     return;
   }
   String sceneName = f.readStringUntil('\n');
-  String mode = f.readStringUntil('\n');
   String modeName = f.readStringUntil('\n');
   String speed = f.readStringUntil('\n');
   String colors = f.readStringUntil('\n');
 
   debug(
-      "LogoStorage::loadScene - sceneName ::= [%s], mode ::= [%s], modeName "
+      "LogoStorage::loadScene - sceneName ::= [%s], modeName "
       "::= [%s], speed ::= [%s], colors ::= [%s]",
-      sceneName.c_str(), mode.c_str(), modeName.c_str(), speed.c_str(),
-      colors.c_str());
+      sceneName.c_str(), modeName.c_str(), speed.c_str(), colors.c_str());
 
   f.close();
 
-  strip->setMode(static_cast<LEDAnimation>(mode.toInt()), colors, speed);
+  strip->setMode(modeName, colors, speed);
 }
 
 void LogoStorage::deleteScene(String name) {
