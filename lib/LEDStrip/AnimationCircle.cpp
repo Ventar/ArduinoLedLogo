@@ -1,19 +1,20 @@
 #include <AnimationCircle.h>
 
 void AnimationCircle::reset() {
-  setAll(0, 0, 0);
-
-  if (data->colors[0] == 0) {
-    setColorListFromString("000044");
-  }
-
   for (uint16_t i = 0; i < strip->numPixels(); i++) {
     strip->setPixelColor(i, data->colors[i]);
   }
 
   show();
-
-  lastColor = 0;
 }
 
-void AnimationCircle::process() {}
+void AnimationCircle::process() {
+  uint32_t start = strip->getPixelColor(0);
+
+  for (uint16_t i = 0; i < strip->numPixels() - 1; i++) {
+    strip->setPixelColor(i, strip->getPixelColor(i + 1));
+  }
+
+  strip->setPixelColor(strip->numPixels() - 1, start);
+  show();
+}

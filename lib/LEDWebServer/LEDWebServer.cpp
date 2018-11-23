@@ -3,6 +3,7 @@
 #include <FS.h>
 #include <LEDWebServer.h>
 #include <LogoConfig.h>
+#include <vector>
 
 ESP8266WebServer espServer(80);
 
@@ -27,8 +28,8 @@ void LEDWebServer::streamStatus() {
   root["leds"] = NUMBER_OF_PIXELS;
   JsonArray& modes = root.createNestedArray("modes");
 
-  Animation** animations = strip->getAnimations();
-  for (int i = 0; i < strip->getAnimationsCount(); i++) {
+  std::vector<Animation*> animations = strip->getAnimations();
+  for (size_t i = 0; i < animations.size(); i++) {
     JsonObject& mode = modes.createNestedObject();
     mode["name"] = animations[i]->getSceneData()->modeName;
     mode["path"] =
@@ -160,9 +161,9 @@ void LEDWebServer::handleRequest() {
   Serial.println(uri);
 
   boolean responseSend = false;
-  Animation** animations = strip->getAnimations();
-  for (int i = 0; i < strip->getAnimationsCount(); i++) {
-    if (handleAnimation(animations[i])) {
+  std::vector<Animation*> animations = strip->getAnimations();
+  for (size_t i = 0; i < animations.size(); i++) {
+    if (handleAnimation(animations.at(i))) {
       responseSend = true;
       break;
     }

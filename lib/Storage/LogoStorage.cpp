@@ -26,12 +26,19 @@ void LogoStorage::storeScene(String name) {
     return;
   }
 
-  f.println(name);
-  f.println(strip->getAnimation()->getSceneData()->modeName);
-  f.println(strip->getAnimation()->getSceneData()->speed);
-  f.println(strip->getAnimation()->getColorListAsString());
+  f.print(name + "\n");
+  f.print(strip->getAnimation()->getSceneData()->modeName + "\n");
+  f.print(String(strip->getAnimation()->getSceneData()->speed) + "\n");
+  f.print(strip->getAnimation()->getColorListAsString() + "\n");
 
   f.close();
+
+  debug(
+      "LogoStorage::storeScene - sceneName ::= [%s], modeName ::= [%s], speed "
+      "::= [%s], colors ::= [%s]",
+      name.c_str(), strip->getAnimation()->getSceneData()->modeName.c_str(),
+      String(strip->getAnimation()->getSceneData()->speed).c_str(),
+      strip->getAnimation()->getColorListAsString().c_str());
 }
 
 void LogoStorage::storeSceneForButton(String buttonName, String sceneName) {
@@ -77,12 +84,12 @@ void LogoStorage::loadScene(String name) {
   String speed = f.readStringUntil('\n');
   String colors = f.readStringUntil('\n');
 
-  debug(
-      "LogoStorage::loadScene - sceneName ::= [%s], modeName "
-      "::= [%s], speed ::= [%s], colors ::= [%s]",
-      sceneName.c_str(), modeName.c_str(), speed.c_str(), colors.c_str());
-
   f.close();
+
+  debug(
+      "LogoStorage::loadScene - sceneName ::= [%s], modeName ::= [%s], speed "
+      "::= [%s], colors ::= [%s]",
+      sceneName.c_str(), modeName.c_str(), speed.c_str(), colors.c_str());
 
   strip->setMode(modeName, colors, speed);
 }

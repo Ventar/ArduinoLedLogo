@@ -86,7 +86,7 @@ class Animation {
    * shorter then the number of LEDS, all remaining LEDs are set to the last
    * color passed in the list.
    */
-  void setColorListFromString(String pixels);
+  virtual void setColorListFromString(String pixels);
 
   /**
    * Returns the stored colors as a comma separated String object.

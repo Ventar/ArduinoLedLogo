@@ -3,16 +3,9 @@
 #define LEDStrip_h
 
 #include <Adafruit_NeoPixel.h>
-#include <AnimationCircle.h>
-#include <AnimationFadeInOut.h>
-#include <AnimationFire.h>
-#include <AnimationMeteorRain.h>
-#include <AnimationOff.h>
-#include <AnimationRainbow.h>
-#include <AnimationSparkle.h>
-#include <AnimationStatic.h>
-#include <AnimationTheaterChase.h>
+#include <Animation.h>
 #include <LogoConfig.h>
+#include <vector>
 
 class LEDStrip {
  public:
@@ -58,12 +51,7 @@ class LEDStrip {
   /**
    * Returns an array of animations.
    * */
-  Animation** getAnimations();
-
-  /**
-   * Returns the number of supported Animations.
-   * */
-  uint8_t getAnimationsCount();
+  std::vector<Animation*> getAnimations();
 
  private:
   /**
@@ -76,9 +64,9 @@ class LEDStrip {
    */
   String modeName = "Off";
   /**
-   * An array with the available animations.
+   * A vector with the available animations.
    */
-  Animation** animations;
+  std::vector<Animation*> animations;
 };
 
 #endif

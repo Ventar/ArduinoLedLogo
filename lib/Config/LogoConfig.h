@@ -41,7 +41,7 @@
 // Global configuration for the used NeoPixel strip of the logo
 // ------------------------------------------------------------------------------------
 #define NEOPIXEL_PIN D3
-#define NUMBER_OF_PIXELS 45
+#define NUMBER_OF_PIXELS 44
 
 // Default delay for the animation
 #define DEFAULT_SPEED 50
