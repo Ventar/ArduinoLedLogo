@@ -8,8 +8,8 @@ class AnimationCloud : public Animation {
   /**
    * Constructor
    */
-  AnimationCloud(Adafruit_NeoPixel* strip)
-      : Animation(strip, "Cloud", "Strip", "cloud"){};
+  AnimationCloud(LogoDynamicConfig* config, Adafruit_NeoPixel* strip)
+      : Animation(config, strip, "Cloud", "Strip", "cloud"){};
 
   /**
    * Resets the animation to the initial values.

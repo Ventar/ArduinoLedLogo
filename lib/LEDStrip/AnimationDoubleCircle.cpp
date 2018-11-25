@@ -9,7 +9,7 @@ void AnimationDoubleCircle::reset() {
 }
 
 void AnimationDoubleCircle::process() {
-  if (counter > NUMBER_OF_PIXELS) {
+  if (counter > strip->numPixels()) {
     counter == 0;
   }
 

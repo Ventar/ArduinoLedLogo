@@ -1,4 +1,3 @@
-
 #ifndef LEDWebServer_h
 #define LEDWebServer_h
 
@@ -16,7 +15,8 @@ class LEDWebServer {
   /**
    * Constructor.
    */
-  LEDWebServer(LEDStrip* strip, LogoStorage* storage, LogoButton** buttons);
+  LEDWebServer(LogoDynamicConfig* config, LEDStrip* strip, LogoStorage* storage,
+               LogoButton** buttons);
 
   /**
    * Performs the needed setup for the LED web server.
@@ -59,6 +59,11 @@ class LEDWebServer {
    * Reference to the storage class to store the crrent scene in the SPIFFS.
    */
   LogoStorage* storage = NULL;
+
+  /**
+   * Configuration class.
+   */
+  LogoDynamicConfig* config;
 
   /**
    * The LED strip to manage.

@@ -16,8 +16,8 @@ class AnimationFadeInOut : public Animation {
   /**
    * Constructor.
    */
-  AnimationFadeInOut(Adafruit_NeoPixel* strip)
-      : Animation(strip, "Fade In Out", "Strip", "fade"){};
+  AnimationFadeInOut(LogoDynamicConfig* config, Adafruit_NeoPixel* strip)
+      : Animation(config, strip, "Fade In Out", "Strip", "fade"){};
 
   /**
    * Resets the animation to the initial values.

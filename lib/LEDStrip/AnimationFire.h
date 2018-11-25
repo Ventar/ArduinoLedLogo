@@ -11,8 +11,8 @@ class AnimationFire : public Animation {
   /**
    * Constructor
    */
-  AnimationFire(Adafruit_NeoPixel* strip)
-      : Animation(strip, "Fire", "None", "fire"){};
+  AnimationFire(LogoDynamicConfig* config, Adafruit_NeoPixel* strip)
+      : Animation(config, strip, "Fire", "None", "fire"){};
 
   /**
    * Performs all update operations of the LEDs when the underlying delay is

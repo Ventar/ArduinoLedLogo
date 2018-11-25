@@ -1,5 +1,4 @@
 #include <AnimationFire.h>
-#include <LogoConfig.h>
 
 void AnimationFire::setPixelHeatColor(int Pixel, byte temperature) {
   // Scale 'heat' down from 0-255 to 0-191
@@ -22,7 +21,7 @@ void AnimationFire::setPixelHeatColor(int Pixel, byte temperature) {
 void AnimationFire::process() {
   int Cooling = 55;
   int Sparking = 120;
-  static byte heat[NUMBER_OF_PIXELS];
+  byte* heat = new byte[strip->numPixels()];
   int cooldown;
 
   // Step 1.  Cool down every cell a little
@@ -50,7 +49,7 @@ void AnimationFire::process() {
 
   // Step 4.  Convert heat to LED colors
   uint16_t pixel;
-  for (int j = -5; j < NUMBER_OF_PIXELS - 5; j++) {
+  for (int j = -5; j < strip->numPixels() - 5; j++) {
     if (j < 0) {
       pixel = strip->numPixels() - j;
     } else {
@@ -61,4 +60,5 @@ void AnimationFire::process() {
   }
 
   show();
+  delete[] heat;
 }

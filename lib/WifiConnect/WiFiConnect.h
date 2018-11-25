@@ -11,7 +11,7 @@ class WiFiConnect {
   /**
    * Constructor.
    */
-  WiFiConnect(String ssid, String pwd);
+  WiFiConnect(LogoDynamicConfig* config);
 
   /**
    * Starts the connection process. Either connects to the stored WiFi network
@@ -26,15 +26,9 @@ class WiFiConnect {
 
  private:
   /**
-   * The name of the SSID of the network that is created when no WiFi connect
-   * was possible.
+   * Logo configration.
    */
-  String ssid;
-  /**
-   * The password to connect to the SSID network creatend when no WiFi connect
-   * is possible.
-   */
-  String pwd;
+  LogoDynamicConfig* config;
 };
 
 #endif

@@ -1,5 +1,7 @@
-#ifndef LogoConfig_h
-#define LogoConfig_h
+#ifndef LogoDynamicConfig_h
+#define LogoDynamicConfig_h
+#include <Arduino.h>
+#include <map>
 
 //  Debugging configuration
 // -----------------------------------------
@@ -17,39 +19,74 @@
 #define debug(x, ...)
 #endif
 
-//  Controls the WIFI settings for the Logo.
-// ------------------------------------------------------------------------------------
-
-// enables the WiFi support for the logo. If this is commented out the logo will
-// not try to setup a WiFi connection nor open an access point. In this case you
-// can only use the buttons of the logo to control the LEDs. This makes only
-// sense if the buttons were configured. Otherwise you will not have any
-// possibility to control the logo beside of the default scene.
-#define WIFI_ENABLE
-// name of the access point that is created in case the logo was not able to
-// find WiFi configuration values in the EEPROM
-#define WIFI_NAME "Flower Of Life"
-// password to use to connect to the access point
-#define WIFI_PASSWORD "flower"
-// MDNS name that can be used to connect to the logo from a device that supports
-// MDNS service. To use this with windows please install bonjour.
-#define WIFI_MDNS_NAME "flower"
 // setting to true will enable debugging information for the WiFiManage libary.
-#define WIFI_DEBUG false
-
-//
-// Global configuration for the used NeoPixel strip of the logo
-// ------------------------------------------------------------------------------------
-#define NEOPIXEL_PIN D3
-#define NUMBER_OF_PIXELS 44
-
-// Default delay for the animation
-#define DEFAULT_SPEED 50
-#define MAX_DELAY 20000
-
-#define HTTP_LED_CONTROL_PREFIX "/led"
+#define WIFI_DEBUG true
 
 #define NUMBER_OF_BUTTONS 4
 static const uint8_t BUTTON_PINS[NUMBER_OF_BUTTONS] = {D7, D5, D6, D8};
+
+/**
+ * Configuration Keys for the logo.
+ */
+enum ConfigKeys {
+  NEOPIXEL_NUMBER,
+  NEOPIXEL_PIN,
+  DEFAULT_SPEED,
+  MAX_DELAY,
+  WIFI_NAME,
+  WIFI_PASSWORD,
+  WIFI_MDNS_NAME
+};
+
+/**
+ * Dynamic configuration values for the logo.
+ */
+class LogoDynamicConfig {
+ public:
+  /**
+   * Constructor.
+   */
+  LogoDynamicConfig() { configMap = new std::map<ConfigKeys, String>; };
+
+  /**
+   * Returns a value from the map.
+   */
+  String getParameterAsString(ConfigKeys key);
+  /**
+   * Returns a value from the map.
+   */
+  const char* getParameterAsCString(ConfigKeys key);
+
+  /**
+   * Returns a value from the map.
+   */
+  uint8_t getParameterAsShort(ConfigKeys key);
+
+  /**
+   * Returns a value from the map.
+   */
+  uint16_t getParameterAsInt(ConfigKeys key);
+
+  /**
+   * Returns a value from the map.
+   */
+  uint32_t getParameterAsLong(ConfigKeys key);
+
+  /**
+   * Sets a value to the map.
+   */
+  void setParameter(ConfigKeys key, String value);
+
+  /**
+   * Returns a reference to the map with he configuration values.
+   */
+  std::map<ConfigKeys, String>* getConfigMap();
+
+ private:
+  /**
+   * Map with parameters.
+   */
+  std::map<ConfigKeys, String>* configMap;
+};
 
 #endif

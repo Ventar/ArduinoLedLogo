@@ -11,25 +11,33 @@
 #include <AnimationTheaterChase.h>
 #include <LEDStrip.h>
 
-LEDStrip::LEDStrip() {}
+LEDStrip::LEDStrip(LogoDynamicConfig* config) {
+  this->config = config;
+
+  strip = new Adafruit_NeoPixel(config->getParameterAsInt(NEOPIXEL_NUMBER),
+                                config->getParameterAsInt(NEOPIXEL_PIN),
+                                NEO_RGB + NEO_KHZ800);
+}
 
 void LEDStrip::setup() {
   this->animations.reserve(10);
-  this->animations.push_back(new AnimationOff(&strip));
-  this->animations.push_back(new AnimationStatic(&strip));
-  this->animations.push_back(new AnimationFadeInOut(&strip));
-  this->animations.push_back(new AnimationRainbow(&strip));
-  this->animations.push_back(new AnimationFire(&strip));
-  this->animations.push_back(new AnimationMeteorRain(&strip));
-  this->animations.push_back(new AnimationTheaterChase(&strip));
-  this->animations.push_back(new AnimationSparkle(&strip));
-  this->animations.push_back(new AnimationCircle(&strip));
-  this->animations.push_back(new AnimationCloud(&strip));
+  this->animations.push_back(new AnimationOff(config, strip));
+  this->animations.push_back(new AnimationStatic(config, strip));
+  this->animations.push_back(new AnimationFadeInOut(config, strip));
+  this->animations.push_back(new AnimationRainbow(config, strip));
+  this->animations.push_back(new AnimationFire(config, strip));
+  this->animations.push_back(new AnimationMeteorRain(config, strip));
+  this->animations.push_back(new AnimationTheaterChase(config, strip));
+  this->animations.push_back(new AnimationSparkle(config, strip));
+  this->animations.push_back(new AnimationCircle(config, strip));
+  this->animations.push_back(new AnimationCloud(config, strip));
   //  this->animations.push_back(new AnimationDoubleCircle(&strip));
 
-  strip.begin();
+  strip->begin();
   setMode("Off");
 }
+
+uint16_t LEDStrip::numPixels() { return strip->numPixels(); }
 
 void LEDStrip::setMode(String modeName, String colors, String speed) {
   for (size_t i = 0; i < this->animations.size(); i++) {

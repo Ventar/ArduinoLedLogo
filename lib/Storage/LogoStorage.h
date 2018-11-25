@@ -37,6 +37,16 @@ class LogoStorage {
   void storeSceneForButton(String buttonName, String sceneName);
 
   /**
+   * Load the configuration from the storage.
+   */
+  void loadConfig();
+
+  /**
+   * Save the configuration value to the storage
+   */
+  void saveConfig(String name, String value);
+
+  /**
    * Open a file from the internal storage in read only mode.
    */
   File open(String name);
@@ -53,7 +63,6 @@ class LogoStorage {
 
  private:
   LEDStrip* strip;
-  uint8_t numberOfScenes = 0;
 };
 
 #endif

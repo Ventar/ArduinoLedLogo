@@ -3,14 +3,15 @@
 /**
  * Names of the LED animation modes
  */
-
-Animation::Animation(Adafruit_NeoPixel* strip, String name, String ledUsageName,
-                     String path) {
+Animation::Animation(LogoDynamicConfig* config, Adafruit_NeoPixel* strip,
+                     String name, String ledUsageName, String path) {
+  this->config = config;
   this->strip = strip;
   this->path = path;
+  this->maxDelay = config->getParameterAsInt(MAX_DELAY);
   this->data = new SceneData();
-  data->speed = DEFAULT_SPEED;
-  data->delay = MAX_DELAY - (MAX_DELAY * DEFAULT_SPEED / 100);
+  data->speed = config->getParameterAsInt(DEFAULT_SPEED);
+  data->delay = this->maxDelay - (this->maxDelay * data->speed / 100);
   data->modeName = name;
   data->ledUsageName = ledUsageName;
 
@@ -94,7 +95,7 @@ String Animation::getColorListAsString() {
 void Animation::setSpeed(int speed) {
   tick = 0;
   data->speed = speed;
-  data->delay = MAX_DELAY - (MAX_DELAY * speed / 100);
+  data->delay = this->maxDelay - (this->maxDelay * speed / 100);
   if (data->delay == 0) {
     data->delay = 1;
   }

@@ -11,8 +11,8 @@ class AnimationSparkle : public Animation {
   /**
    * Constructor.
    */
-  AnimationSparkle(Adafruit_NeoPixel* strip)
-      : Animation(strip, "Sparkle", "Strip", "sparkle") {
+  AnimationSparkle(LogoDynamicConfig* config, Adafruit_NeoPixel* strip)
+      : Animation(config, strip, "Sparkle", "Strip", "sparkle") {
     memory = new uint8_t[45]{0};
   };
 

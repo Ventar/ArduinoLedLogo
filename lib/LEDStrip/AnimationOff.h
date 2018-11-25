@@ -8,8 +8,8 @@ class AnimationOff : public Animation {
   /**
    * Constructor
    */
-  AnimationOff(Adafruit_NeoPixel* strip)
-      : Animation(strip, "Off", "None", "off"){};
+  AnimationOff(LogoDynamicConfig* config, Adafruit_NeoPixel* strip)
+      : Animation(config, strip, "Off", "None", "off"){};
 
   /**
    * Resets the animation to the initial values.

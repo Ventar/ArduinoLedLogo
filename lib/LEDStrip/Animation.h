@@ -16,7 +16,7 @@ struct SceneData {
   /**
    * The speed of the animation in percent relative to the delay.
    */
-  uint16_t speed = DEFAULT_SPEED;
+  uint16_t speed = 50;
 
   /**
    * The colors managed by the static animation. This class has to remember to
@@ -45,8 +45,8 @@ class Animation {
   /**
    * Constructor.
    */
-  Animation(Adafruit_NeoPixel* strip, String name, String ledUsageName,
-            String path);
+  Animation(LogoDynamicConfig* config, Adafruit_NeoPixel* strip, String name,
+            String ledUsageName, String path);
 
   /**
    * The delay value that is used to decide if the process() method is
@@ -108,6 +108,11 @@ class Animation {
   uint16_t counter = 0;
 
   /**
+   * The configuration class.
+   */
+  LogoDynamicConfig* config;
+
+  /**
    * Comination of data fields that make a scene displayed by the logo.
    */
   SceneData* data;
@@ -154,6 +159,10 @@ class Animation {
    * The current tick counter.
    */
   uint16_t tick = 0;
+  /**
+   * The configured maximum delay.
+   */
+  uint16_t maxDelay;
 };
 
 #endif

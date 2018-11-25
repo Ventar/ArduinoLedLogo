@@ -12,7 +12,7 @@ class LEDStrip {
   /**
    * Constructor.
    */
-  LEDStrip();
+  LEDStrip(LogoDynamicConfig* config);
 
   /**
    * Perform the setup operation of this class inside of the Arduino setup
@@ -53,12 +53,20 @@ class LEDStrip {
    * */
   std::vector<Animation*> getAnimations();
 
+  /**
+   * Returns the number of pixels.
+   */
+  uint16_t numPixels();
+
  private:
+  /**
+   * Configuration class.
+   */
+  LogoDynamicConfig* config;
   /**
    * Reference to the NeoPixel strip.
    */
-  Adafruit_NeoPixel strip =
-      Adafruit_NeoPixel(NUMBER_OF_PIXELS, NEOPIXEL_PIN, NEO_RGB + NEO_KHZ800);
+  Adafruit_NeoPixel* strip;
   /**
    * The current mode of the animation.
    */

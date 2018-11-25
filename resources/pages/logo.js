@@ -1,28 +1,7 @@
-//var domain = 'http://192.168.2.106';
-var domain = '';
+var domain = 'http://192.168.2.106';
+//var domain = '';
 var data;
-var lastColor;
-
-
-/**
- * Changes the displayed page.
-  */
-function showPage(page) {
-
-    $('#navScenes').removeClass('active');
-    $('#navProgram').removeClass('active');
-
-    if (page == 'scenes') {
-        $('#navScenes').addClass('active');
-        $('#scenesCards').show();
-        $('#programCards').hide();
-
-    } else if (page == 'program') {
-        $('#navProgram').addClass('active')
-        $('#scenesCards').hide();
-        $('#programCards').show();
-    }
-}
+var ledToSet;
 
 /**
  * Sends a request to the logo to update it.

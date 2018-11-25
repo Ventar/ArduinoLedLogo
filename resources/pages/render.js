@@ -1,4 +1,54 @@
 
+
+/**
+ * Changes the displayed page.
+  */
+function showPage(page) {
+
+    $('#navScenes').removeClass('active');
+    $('#navProgram').removeClass('active');
+
+    if (page == 'scenes') {
+        $('#navScenes').addClass('active');
+        $('#scenesCards').show();
+        $('#programCards').hide();
+
+    } else if (page == 'program') {
+        $('#navProgram').addClass('active')
+        $('#scenesCards').hide();
+        $('#programCards').show();
+    }
+}
+
+/**
+ * Selects a led to change the color. This function stores the selecred led
+ * in global variable which is used by the colorSelected method afterwards.
+ * @param {*} led the selected led or ALL
+ */
+function ledSelected(led) {
+    ledToSet = led;
+    $('#globalColorPicker').modal('show');
+}
+
+/**
+ * Selects a color from the color picker modal.
+ * @param color the selected color
+ */
+function colorSelected(color) {
+
+    if (ledToSet == 'all') {
+        for (var i = 0; i < data.leds; i++) {
+            data.colors[i] = color;
+        }
+    } else {
+        data.colors[ledToSet] = color;
+    }
+
+    renderColorCard();
+
+    $('#globalColorPicker').modal('hide');
+}
+
 /**
  * Render the DROPDOWN for the MODE card
  * -------------------------------------------------------------------------------------------------------------------------------------------
@@ -47,29 +97,11 @@ function renderColorCard() {
         $('#scColorButtonUpdate').css('width', '49%');
 
         for (var i = 0; i < data.leds; i++) {
-            var element = '<div id="statusColorDiv' + i + '" style="display: inline-block;"><svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">';
+            var element = '<div id="statusColorDiv' + i + '" style="display: inline-block;" onclick="ledSelected(\'' + i + '\')"><svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">';
             element += '<circle id="statusColor' + i + '" style="opacity:1;fill:#' + data.colors[i] + ';" cx="24" cy="24" r="24" />';
             element += '</svg></div>';
 
             $("#scColorCtColors").append(element);
-
-            var hueb = new Huebee('#statusColorDiv' + i, {
-                setText: false,
-                setBGColor: false,
-                notation: 'hex',
-                hues: 8,
-                saturations: 3,
-                shades: 4,
-                className: 'dark-picker'
-            });
-
-            hueb.on('change', function (color, hue, sat, lum) {
-                var id = this.anchor.id.substring(14);
-                data.colors[id] = color.substring(1, color.length);
-                lastColor = color;
-                $('#statusColor' + id).css('fill', color);
-                this.close();
-            })
 
         }
     } else if (data.usage == 'None') {
@@ -183,6 +215,7 @@ function renderSceneCards() {
  * Updates the page from the JSON data structure send by the logo.
  */
 function updatePage() {
+
 
     renderSceneCards();
     renderModeCard();

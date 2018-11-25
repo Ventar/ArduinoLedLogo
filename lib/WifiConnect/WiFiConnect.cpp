@@ -8,12 +8,9 @@
 #include <WiFiConnect.h>
 #include <WiFiManager.h>
 
-WiFiConnect::WiFiConnect(String ssid, String pwd) {
-  this->ssid = ssid;
-  this->pwd = pwd;
-}
+WiFiConnect::WiFiConnect(LogoDynamicConfig* config) { this->config = config; }
 
-void configModeCallback(WiFiManager *myWiFiManager) {
+void configModeCallback(WiFiManager* myWiFiManager) {
   debug(
       "WifiConnect: Entered WiFi config mode IP ::=[%s], SSID ::=[%s], MAC "
       "::= [%s]",
@@ -32,8 +29,9 @@ void WiFiConnect::connect() {
   WiFiManager wifiManager;
   wifiManager.setDebugOutput(WIFI_DEBUG);
   wifiManager.setAPCallback(configModeCallback);
-  wifiManager.autoConnect(ssid.c_str(), pwd.c_str());
-  WiFi.hostname("Flower of Life");
+  wifiManager.autoConnect(config->getParameterAsCString(WIFI_NAME),
+                          config->getParameterAsCString(WIFI_PASSWORD));
+  WiFi.hostname("MROPOINT");
 
   debug(
       "WifiConnect: Connected to IP ::= [%s], SSID ::= [%s], MAC Address ::= "
@@ -41,8 +39,8 @@ void WiFiConnect::connect() {
       WiFi.localIP().toString().c_str(), WiFi.SSID().c_str(),
       WiFi.macAddress().c_str());
 
-  if (MDNS.begin(WIFI_MDNS_NAME)) {
+  if (MDNS.begin(config->getParameterAsCString(WIFI_MDNS_NAME))) {
     debug("WiFiConnect: MDNS responder started with name ::= [%s]",
-          WIFI_MDNS_NAME);
+          config->getParameterAsString(WIFI_MDNS_NAME).c_str());
   }
 }

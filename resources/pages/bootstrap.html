@@ -19,7 +19,7 @@
 	 crossorigin="anonymous" -->
 	<!-- link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/litera/bootstrap.min.css" rel="stylesheet" integrity="sha384-JuAGGg3c8UPrWdf0N8ZPJyOHkACruI9+mbl0C+H6XSYOqv9xIdiUSKehRyA8jUol"
 	 crossorigin="anonymous" -->
-	<link rel="stylesheet" href="https://unpkg.com/huebee@1/dist/huebee.min.css">
+
 	<style>
 
 		.help {
@@ -81,6 +81,20 @@
 			border-style: groove;
 			border-left-width: 0;
 			border-right-width: 0; 
+		}
+
+		.color-group {
+			width: 5%;
+			float: left;
+			display: block;
+		}
+
+		.color-block {
+			float: left;
+			display: block;
+			position: relative;
+			width: 100%;
+			padding-bottom: 100%;
 		}
 
 	</style>
@@ -217,7 +231,7 @@
 								<path style="opacity:1;fill:#aaaaaa;fill-opacity:0.42089551;" d="M 48,0 A 48,48 0 0 0 0,48 48,48 0 0 0 48,96 48,48 0 0 0 96,48 48,48 0 0 0 48,0 Z m 0,8 a 40,40 0 0 1 24.949219,8.783203 L 16.759766,72.972656 A 40,40 0 0 1 8,48 40,40 0 0 1 48,8 Z M 79.994141,24.058594 A 40,40 0 0 1 88,48 40,40 0 0 1 48,88 40,40 0 0 1 24.064453,79.988281 L 79.994141,24.058594 Z" />
 							</svg>
 						</div>
-						<div id="scColorCtSingleUsage" class="card-text mb-2 bordertb" style="display: none;">
+						<div id="scColorCtSingleUsage" class="card-text mb-2 bordertb" style="display: none;" onclick="ledSelected('all')">
 							<svg class="card-img-top pt-3 pb-3" width="96" height="96" viewBox="0 0 96 96">
 								<ellipse id="scColorDataSingleColor" style="opacity:1;fill:#4d4d4d;" id="path7838" cx="48" cy="48" rx="48" ry="48" />
 							</svg>
@@ -231,8 +245,6 @@
 					</div>
 				</div>
 			</div>
-
-
 
 			<div id="scSpeed" class="col-md-3 mt-2">
 				<div class="card mb-3 h-100">
@@ -251,7 +263,7 @@
 						<div id="scSpeedCtDataSpeed" class="card-text pt-2 p-2 bordertb" style="display: none;">
 							<div class="progress" style="height: 30px;">
 								<div id="scSpeedDataProgressSpeed" class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%;"
-								 aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+								 aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">&nbsp;</div>
 							</div>
 						</div>
 						<div id="scSpeedCtDataNoSpeed" class="card-text mb-2 bordertb">
@@ -290,8 +302,6 @@
 					</div>
 					<div id="scSceneContent" class="card-body d-flex flex-column">
 
-
-
 						<div class="form-group">
 							<select id="scSceneSelect" onchange="changeSelectedScene();" class="custom-select bg-secondary" style="color:#ffffff">
 							</select>
@@ -302,7 +312,7 @@
 							 data-toggle="modal" data-target="#scSceneModalAdd">Add</button>
 							<button id="scSceneButtonRemove" type="button" class="btn btn-primary btn" style="display: inline-block; width: 33%;"
 							 data-toggle="modal" data-target="#scSceneModalRemove">Remove</button>
-							<div style="width: 20px;"></div>
+							<div style="width: 20px;">&nbsp;</div>
 							<button id="scSceneButtonEnable" type="button" class="btn btn-primary btn-lg" style="display: inline-block; width: 33%;"
 							 onclick="loadScene()">Load</button>
 						</div>
@@ -389,7 +399,7 @@
 	</div>
 
 	<!-- Modal Color Picker -->
-	<div class="modal fade" id="globalColorPicker" tabindex="-1" role="dialog" aria-labelledby="gColorTitle" aria-hidden="true">
+	<div class="modal " id="globalColorPicker" tabindex="-1" role="dialog" aria-labelledby="gColorTitle" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -398,15 +408,535 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body" id="gColorContent" style="text-align: center">
+					<ul class="nav nav-tabs" id="gcpTabs" role="tablist">
+						<li class="nav-item">
+							<div class="nav-link active" id="gcpTabRed" data-toggle="tab" href="#gcpTabRedDiv" role="tab" aria-controls="gcpTabRedDiv"
+							 aria-selected="true">
+								<div style="width:24px; height:24px;">
+									<svg width="24" height="24" viewBox="0 0 24 24">
+										<circle style="opacity:1;fill:#880000" cx="12" cy="12" r="12" />
+									</svg>
+								</div>
+							</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="gcpTabViolett" data-toggle="tab" href="#gcpTabViolettDiv" role="tab" aria-controls="gcpTabViolettDiv"
+							 aria-selected="false">
+								<div style="width:24px; height:24px;">
+									<svg width="24" height="24" viewBox="0 0 24 24">
+										<circle style="opacity:1;fill:#5b2c6f" cx="12" cy="12" r="12" />
+									</svg>
+								</div>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="gcpTabBlue" data-toggle="tab" href="#gcpTabBlueDiv" role="tab" aria-controls="gcpTabBlueDiv"
+							 aria-selected="false">
+								<div style="width:24px; height:24px;">
+									<svg width="24" height="24" viewBox="0 0 24 24">
+										<circle style="opacity:1;fill:#21618c" cx="12" cy="12" r="12" />
+									</svg>
+								</div>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="gcpTabTeal" data-toggle="tab" href="#gcpTabTealDiv" role="tab" aria-controls="gcpTabTealDiv"
+							 aria-selected="false">
+								<div style="width:24px; height:24px;">
+									<svg width="24" height="24" viewBox="0 0 24 24">
+										<circle style="opacity:1;fill:#0e6655" cx="12" cy="12" r="12" />
+									</svg>
+								</div>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="gcpTabGreen" data-toggle="tab" href="#gcpTabGreenDiv" role="tab" aria-controls="gcpTabGreenDiv"
+							 aria-selected="false">
+								<div style="width:24px; height:24px;">
+									<svg width="24" height="24" viewBox="0 0 24 24">
+										<circle style="opacity:1;fill:#1d8348" cx="12" cy="12" r="12" />
+									</svg>
+								</div>
+							</a>
+						<li class="nav-item">
+							<a class="nav-link" id="gcpTabYellow" data-toggle="tab" href="#gcpTabYellowDiv" role="tab" aria-controls="gcpTabYellowDiv"
+							 aria-selected="false">
+								<div style="width:24px; height:24px;">
+									<svg width="24" height="24" viewBox="0 0 24 24">
+										<circle style="opacity:1;fill:#9c640c" cx="12" cy="12" r="12" />
+									</svg>
+								</div>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="gcpTabBrown" data-toggle="tab" href="#gcpTabBrownDiv" role="tab" aria-controls="gcpTabBrownDiv"
+							 aria-selected="false">
+								<div style="width:24px; height:24px;">
+									<svg width="24" height="24" viewBox="0 0 24 24">
+										<circle style="opacity:1;fill:#873600" cx="12" cy="12" r="12" />
+									</svg>
+								</div>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="gcpTabGrey" data-toggle="tab" href="#gcpTabGreyDiv" role="tab" aria-controls="gcpTabGreyDiv"
+							 aria-selected="false">
+								<div style="width:24px; height:24px;">
+									<svg width="24" height="24" viewBox="0 0 24 24">
+										<circle style="opacity:1;fill:#d0d3d4" cx="12" cy="12" r="12" />
+									</svg>
+								</div>
+							</a>
+						</li>
+					</ul>
+					<div class="tab-content" id="myTabContent">
+						<div class="tab-pane  show active mt-3 mb-3" id="gcpTabRedDiv" role="tabpanel" aria-labelledby="gcpTabRed">
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#ff0000" cx="24" cy="24" r="24" onclick="colorSelected('ff0000')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#7b241c" cx="24" cy="24" r="24" onclick="colorSelected('7b241c')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#922b21" cx="24" cy="24" r="24" onclick="colorSelected('922b21')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#a93226" cx="24" cy="24" r="24" onclick="colorSelected('a93226')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#c0392b" cx="24" cy="24" r="24" onclick="colorSelected('c0392b')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#cd6155" cx="24" cy="24" r="24" onclick="colorSelected('cd6155')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#d98880" cx="24" cy="24" r="24" onclick="colorSelected('d98880')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#e6b0aa" cx="24" cy="24" r="24" onclick="colorSelected('e6b0aa')" />
+								</svg>
+							</div>
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#880000" cx="24" cy="24" r="24" onclick="colorSelected('880000')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#943126" cx="24" cy="24" r="24" onclick="colorSelected('943126')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#b03a2e" cx="24" cy="24" r="24" onclick="colorSelected('b03a2e')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#cb4335" cx="24" cy="24" r="24" onclick="colorSelected('cb4335')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#c74c3c" cx="24" cy="24" r="24" onclick="colorSelected('c74c3c')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#ec7063" cx="24" cy="24" r="24" onclick="colorSelected('ec7063')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#f1948a" cx="24" cy="24" r="24" onclick="colorSelected('f1948a')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#f5b7b1" cx="24" cy="24" r="24" onclick="colorSelected('f5b7b1')" />
+								</svg>
+							</div>
+						</div>
+						<div class="tab-pane mt-3 mb-3" id="gcpTabViolettDiv" role="tabpanel" aria-labelledby="gcpTabViolett">
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#ff00ff" cx="24" cy="24" r="24" onclick="colorSelected('880088')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#633974" cx="24" cy="24" r="24" onclick="colorSelected('633974')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#76448a" cx="24" cy="24" r="24" onclick="colorSelected('76448a')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#884ea0" cx="24" cy="24" r="24" onclick="colorSelected('884ea0')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#9b59b6" cx="24" cy="24" r="24" onclick="colorSelected('9b59b6')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#af7ac5" cx="24" cy="24" r="24" onclick="colorSelected('af7ac5')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#c39bd3" cx="24" cy="24" r="24" onclick="colorSelected('c39bd3')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#d7bde2" cx="24" cy="24" r="24" onclick="colorSelected('d7bde2')" />
+								</svg>
+							</div>
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#880088" cx="24" cy="24" r="24" onclick="colorSelected('880088')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#5b2c6f" cx="24" cy="24" r="24" onclick="colorSelected('5b2c6f')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#6c3483" cx="24" cy="24" r="24" onclick="colorSelected('6c3483')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#7d3c98" cx="24" cy="24" r="24" onclick="colorSelected('7d3c98')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#8e77ad" cx="24" cy="24" r="24" onclick="colorSelected('8e77ad')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#a569bd" cx="24" cy="24" r="24" onclick="colorSelected('a569bd')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#bb8fce" cx="24" cy="24" r="24" onclick="colorSelected('bb8fce')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#d2b4de" cx="24" cy="24" r="24" onclick="colorSelected('d2b4de')" />
+								</svg>
+							</div>
+						</div>
 
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<div class="tab-pane mt-3 mb-3" id="gcpTabBlueDiv" role="tabpanel" aria-labelledby="gcpTabBlue">
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#0000ff" cx="24" cy="24" r="24" onclick="colorSelected('0000ff')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#1a5276" cx="24" cy="24" r="24" onclick="colorSelected('1a5276')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#1f618d" cx="24" cy="24" r="24" onclick="colorSelected('1f618d')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#2471a3" cx="24" cy="24" r="24" onclick="colorSelected('2471a3')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#2980b9" cx="24" cy="24" r="24" onclick="colorSelected('2980b9')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#5499c7" cx="24" cy="24" r="24" onclick="colorSelected('5499c7')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#7fb3d5" cx="24" cy="24" r="24" onclick="colorSelected('7fb3d5')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#a9cce3" cx="24" cy="24" r="24" onclick="colorSelected('a9cce3')" />
+								</svg>
+							</div>
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#000088" cx="24" cy="24" r="24" onclick="colorSelected('000088')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#21618c" cx="24" cy="24" r="24" onclick="colorSelected('21618c')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#2874a6" cx="24" cy="24" r="24" onclick="colorSelected('2874a6')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#2e86c1" cx="24" cy="24" r="24" onclick="colorSelected('2e86c1')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#3498db" cx="24" cy="24" r="24" onclick="colorSelected('3498db')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#5dade2" cx="24" cy="24" r="24" onclick="colorSelected('5dade2')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#85c1e9" cx="24" cy="24" r="24" onclick="colorSelected('85c1e9')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#aed6f1" cx="24" cy="24" r="24" onclick="colorSelected('aed6f1')" />
+								</svg>
+							</div>
+						</div>
+
+						<div class="tab-pane mt-3 mb-3" id="gcpTabTealDiv" role="tabpanel" aria-labelledby="gcpTabTeal">
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#008888" cx="24" cy="24" r="24" onclick="colorSelected('008888')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#117864" cx="24" cy="24" r="24" onclick="colorSelected('117864')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#148f77" cx="24" cy="24" r="24" onclick="colorSelected('148f77')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#17a589" cx="24" cy="24" r="24" onclick="colorSelected('17a589')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#1abc9c" cx="24" cy="24" r="24" onclick="colorSelected('1abc9c')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#48c9b0" cx="24" cy="24" r="24" onclick="colorSelected('48c9b0')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#76d7c4" cx="24" cy="24" r="24" onclick="colorSelected('76d7c4')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#a3e4d7" cx="24" cy="24" r="24" onclick="colorSelected('a3e4d7')" />
+								</svg>
+							</div>
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#066666" cx="24" cy="24" r="24" onclick="colorSelected('066666')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#0e6655" cx="24" cy="24" r="24" onclick="colorSelected('0e6655')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#117a65" cx="24" cy="24" r="24" onclick="colorSelected('117a65')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#138d75" cx="24" cy="24" r="24" onclick="colorSelected('138d75')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#16a085" cx="24" cy="24" r="24" onclick="colorSelected('16a085')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#45b39d" cx="24" cy="24" r="24" onclick="colorSelected('45b39d')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#73c6b6" cx="24" cy="24" r="24" onclick="colorSelected('73c6b6')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#a2d9ce" cx="24" cy="24" r="24" onclick="colorSelected('a2d9ce')" />
+								</svg>
+							</div>
+						</div>
+
+						<div class="tab-pane mt-3 mb-3" id="gcpTabGreenDiv" role="tabpanel" aria-labelledby="gcpTabGreen">
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#00ff00" cx="24" cy="24" r="24" onclick="colorSelected('00ff00')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#196f3d" cx="24" cy="24" r="24" onclick="colorSelected('196f3d')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#1e8449" cx="24" cy="24" r="24" onclick="colorSelected('1e8449')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#229954" cx="24" cy="24" r="24" onclick="colorSelected('229954')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#27ae60" cx="24" cy="24" r="24" onclick="colorSelected('27ae60')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#52be80" cx="24" cy="24" r="24" onclick="colorSelected('52be80')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#7dcea0" cx="24" cy="24" r="24" onclick="colorSelected('7dcea0')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#a9dfbf" cx="24" cy="24" r="24" onclick="colorSelected('a9dfbf')" />
+								</svg>
+							</div>
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#008800" cx="24" cy="24" r="24" onclick="colorSelected('008800')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#1d8348" cx="24" cy="24" r="24" onclick="colorSelected('1d8348')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#239b56" cx="24" cy="24" r="24" onclick="colorSelected('239b56')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#28b463" cx="24" cy="24" r="24" onclick="colorSelected('28b463')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#2ecc71" cx="24" cy="24" r="24" onclick="colorSelected('2ecc71')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#58d68d" cx="24" cy="24" r="24" onclick="colorSelected('58d68d')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#82e0aa" cx="24" cy="24" r="24" onclick="colorSelected('82e0aa')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#d5f5e3" cx="24" cy="24" r="24" onclick="colorSelected('d5f5e3')" />
+								</svg>
+							</div>
+						</div>
+
+						<div class="tab-pane mt-3 mb-3" id="gcpTabYellowDiv" role="tabpanel" aria-labelledby="gcpTabYellow">
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#ffff00" cx="24" cy="24" r="24" onclick="colorSelected('00ff00')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#9a7d0a" cx="24" cy="24" r="24" onclick="colorSelected('9a7d0a')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#b7950b" cx="24" cy="24" r="24" onclick="colorSelected('b7950b')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#d4ac0d" cx="24" cy="24" r="24" onclick="colorSelected('d4ac0d')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#f1c40f" cx="24" cy="24" r="24" onclick="colorSelected('f1c40f')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#f4d03f" cx="24" cy="24" r="24" onclick="colorSelected('f4d03f')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#f7dc6f" cx="24" cy="24" r="24" onclick="colorSelected('f7dc6f')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#f9e79f" cx="24" cy="24" r="24" onclick="colorSelected('f9e79f')" />
+								</svg>
+							</div>
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#888800" cx="24" cy="24" r="24" onclick="colorSelected('008800')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#9c640c" cx="24" cy="24" r="24" onclick="colorSelected('9c640c')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#b9770e" cx="24" cy="24" r="24" onclick="colorSelected('b9770e')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#d68910" cx="24" cy="24" r="24" onclick="colorSelected('d68910')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#f39c12" cx="24" cy="24" r="24" onclick="colorSelected('f39c12')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#f5b041" cx="24" cy="24" r="24" onclick="colorSelected('f5b041')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#fad7a0" cx="24" cy="24" r="24" onclick="colorSelected('fad7a0')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#fdebd0" cx="24" cy="24" r="24" onclick="colorSelected('fdebd0')" />
+								</svg>
+							</div>
+						</div>
+
+						<div class="tab-pane mt-3 mb-3" id="gcpTabBrownDiv" role="tabpanel" aria-labelledby="gcpTabBrown">
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#784212" cx="24" cy="24" r="24" onclick="colorSelected('784212')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#935116" cx="24" cy="24" r="24" onclick="colorSelected('935116')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#af601a" cx="24" cy="24" r="24" onclick="colorSelected('af601a')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#ca6f1e" cx="24" cy="24" r="24" onclick="colorSelected('ca6f1e')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#e67e22" cx="24" cy="24" r="24" onclick="colorSelected('e67e22')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#eb984e" cx="24" cy="24" r="24" onclick="colorSelected('eb984e')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#f0b27a" cx="24" cy="24" r="24" onclick="colorSelected('f0b27a')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#f5cba7" cx="24" cy="24" r="24" onclick="colorSelected('f5cba7')" />
+								</svg>
+							</div>
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#6e2c00" cx="24" cy="24" r="24" onclick="colorSelected('6e2c00')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#873600" cx="24" cy="24" r="24" onclick="colorSelected('873600')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#a04000" cx="24" cy="24" r="24" onclick="colorSelected('a04000')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#ba4a00" cx="24" cy="24" r="24" onclick="colorSelected('ba4a00')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#d35400" cx="24" cy="24" r="24" onclick="colorSelected('d35400')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#dc7633" cx="24" cy="24" r="24" onclick="colorSelected('dc7633')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#e59866" cx="24" cy="24" r="24" onclick="colorSelected('e59866')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#edbb99" cx="24" cy="24" r="24" onclick="colorSelected('edbb99')" />
+								</svg>
+							</div>
+						</div>
+
+						<div class="tab-pane mt-3 mb-3" id="gcpTabGreyDiv" role="tabpanel" aria-labelledby="gcpTabGrey">
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#ffffff" cx="24" cy="24" r="24" onclick="colorSelected('ffffff')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#979a9a" cx="24" cy="24" r="24" onclick="colorSelected('979a9a')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#b3b6b7" cx="24" cy="24" r="24" onclick="colorSelected('b3b6b7')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#d0d3d4" cx="24" cy="24" r="24" onclick="colorSelected('d0d3d4')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#ecf0f1" cx="24" cy="24" r="24" onclick="colorSelected('ecf0f1')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#f0f3f4" cx="24" cy="24" r="24" onclick="colorSelected('f0f3f4')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#f4f6f7" cx="24" cy="24" r="24" onclick="colorSelected('f4f6f7')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#f7f9f9" cx="24" cy="24" r="24" onclick="colorSelected('f7f9f9')" />
+								</svg>
+							</div>
+							<div style="display: inline-block;">
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 20px">
+									<circle style="opacity:1;fill:#000000" cx="24" cy="24" r="24" onclick="colorSelected('000000')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay" style="margin-right: 5px">
+									<circle style="opacity:1;fill:#797d7f" cx="24" cy="24" r="24" onclick="colorSelected('797d7f')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#909497" cx="24" cy="24" r="24" onclick="colorSelected('909497')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#a6acaf" cx="24" cy="24" r="24" onclick="colorSelected('a6acaf')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#bdc3c7" cx="24" cy="24" r="24" onclick="colorSelected('bdc3c7')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#cacfd2" cx="24" cy="24" r="24" onclick="colorSelected('cacfd2')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#d7dbdd" cx="24" cy="24" r="24" onclick="colorSelected('d7dbdd')" />
+								</svg>
+								<svg width="48" height="48" viewBox="0 0 48 48" class="ledDisplay">
+									<circle style="opacity:1;fill:#e5e7e9" cx="24" cy="24" r="24" onclick="colorSelected('e5e7e9')" />
+								</svg>
+							</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
 	</div>
 
@@ -419,56 +949,17 @@
 	 crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	 crossorigin="anonymous"></script>
-	<script src="https://unpkg.com/huebee@1/dist/huebee.pkgd.min.js"></script>
+
 	<script src="./logo.js"></script>
 	<script src="./render.js"></script>
 
 	<script>
 		$(document).ready(function () {
 			sendRequestToLogo(domain + '/status');
-
 			$(function () {
 				$('[data-toggle="popover"]').popover()
 				$('[data-toggle="tooltip"]').tooltip();
 			})
-
-			var hueb = new Huebee('#scColorButtonAll', {
-				setText: false,
-				setBGColor: false,
-				notation: 'hex',
-				hues: 6,
-				saturations: 1,
-				shades: 4,
-				className: 'dark-picker'
-			});
-			hueb.on('change', function (color, hue, sat, lum) {
-				for (var i = 0; i < data.leds; i++) {
-					data.colors[i] = color.substring(1, color.length);
-				}
-				updatePage();
-				this.close();
-			})
-
-			var hueb2 = new Huebee('#scColorCtSingleUsage', {
-				setText: false,
-				setBGColor: false,
-				notation: 'hex',
-				hues: 6,
-				saturations: 1,
-				shades: 4,
-				className: 'dark-picker'
-			});
-			hueb2.on('change', function (color, hue, sat, lum) {
-				var id = this.anchor.id.substring(14);
-
-				for (var i = 0; i < data.leds; i++) {
-					data.colors[i] = color.substring(1, color.length);
-				}
-
-				$('#scColorDataSingleColor').css('fill', color);
-				this.close();
-			})
-
 		});
 	</script>
 

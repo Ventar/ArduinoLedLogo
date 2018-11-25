@@ -1,3 +1,4 @@
+
 #include <LogoStorage.h>
 
 void LogoStorage::setup() {

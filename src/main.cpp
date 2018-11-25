@@ -7,15 +7,13 @@
 #include <LogoStorage.h>
 #include <WiFiConnect.h>
 
-#ifdef WIFI_ENABLE
-WiFiConnect wifiConnection(WIFI_NAME, WIFI_PASSWORD);
-#endif
-
-LEDStrip strip = LEDStrip();
+LogoDynamicConfig config = LogoDynamicConfig();
+WiFiConnect wifiConnection(&config);
+LEDStrip strip = LEDStrip(&config);
 LogoStorage storage = LogoStorage(&strip);
 
 LogoButton* buttons[NUMBER_OF_BUTTONS];
-LEDWebServer ledWebServer = LEDWebServer(&strip, &storage, buttons);
+LEDWebServer ledWebServer = LEDWebServer(&config, &strip, &storage, buttons);
 
 void setup() {
   Serial.begin(115200);
@@ -31,13 +29,11 @@ void setup() {
     buttons[i]->setup();
   }
 
-#ifdef WIFI_ENABLE
   strip.setMode("Static", "550000");
   wifiConnection.connect();
   ledWebServer.setup();
   strip.setMode("Static", "005500");
   delay(3000);
-#endif
 
   strip.setMode("Off");
   debugln("Main: Setup finished...");

@@ -11,8 +11,8 @@ class AnimationRainbow : public Animation {
   /**
    * Constructor.
    */
-  AnimationRainbow(Adafruit_NeoPixel* strip)
-      : Animation(strip, "Rainbow", "None", "rainbow"){};
+  AnimationRainbow(LogoDynamicConfig* config, Adafruit_NeoPixel* strip)
+      : Animation(config, strip, "Rainbow", "None", "rainbow"){};
 
   /**
    * Performs all update operations of the LEDs when the underlying delay is
