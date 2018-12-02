@@ -3,14 +3,14 @@
 /**
  * Names of the LED animation modes
  */
-Animation::Animation(LogoDynamicConfig* config, Adafruit_NeoPixel* strip,
+Animation::Animation(LogoConfig* config, Adafruit_NeoPixel* strip,
                      String name, String ledUsageName, String path) {
   this->config = config;
   this->strip = strip;
   this->path = path;
-  this->maxDelay = config->getParameterAsInt(MAX_DELAY);
+  this->maxDelay = config->getParameterAsInt("MAX_DELAY");
   this->data = new SceneData();
-  data->speed = config->getParameterAsInt(DEFAULT_SPEED);
+  data->speed = config->getParameterAsInt("DEFAULT_SPEED");
   data->delay = this->maxDelay - (this->maxDelay * data->speed / 100);
   data->modeName = name;
   data->ledUsageName = ledUsageName;

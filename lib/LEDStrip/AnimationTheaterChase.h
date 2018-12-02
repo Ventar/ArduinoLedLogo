@@ -11,7 +11,7 @@ class AnimationTheaterChase : public Animation {
   /**
    * Constructor.
    */
-  AnimationTheaterChase(LogoDynamicConfig* config, Adafruit_NeoPixel* strip)
+  AnimationTheaterChase(LogoConfig* config, Adafruit_NeoPixel* strip)
       : Animation(config, strip, "Theater Chase", "Strip", "theater"){};
 
   /**

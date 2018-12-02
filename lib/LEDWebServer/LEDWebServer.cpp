@@ -1,13 +1,16 @@
 #include <ArduinoJson.h>
 #include <ESP8266WebServer.h>
+#include <ESP8266httpUpdate.h>
 #include <FS.h>
+#include <JSONOutput.h>
 #include <LEDWebServer.h>
 #include <vector>
 
 ESP8266WebServer espServer(80);
 
-LEDWebServer::LEDWebServer(LogoDynamicConfig* config, LEDStrip* strip,
-                           LogoStorage* storage, LogoButton** buttons) {
+LEDWebServer::LEDWebServer(LogoConfig* config, LEDStrip* strip,
+                           LogoStorage* storage,
+                           std::vector<LogoButton*>* buttons) {
   this->config = config;
   this->server = &espServer;
   this->strip = strip;
@@ -15,95 +18,8 @@ LEDWebServer::LEDWebServer(LogoDynamicConfig* config, LEDStrip* strip,
   this->buttons = buttons;
 }
 
-void LEDWebServer::streamStatus() {
-  DynamicJsonBuffer jsonBuffer;
-  JsonObject& root = jsonBuffer.createObject();
-
-  // common data
-  // -------------------------------------------------------------
-
-  root["mode"] = strip->getAnimation()->getSceneData()->modeName;
-  root["usage"] = strip->getAnimation()->getSceneData()->ledUsageName;
-  root["delay"] = strip->getAnimation()->getSceneData()->delay;
-  root["speed"] = strip->getAnimation()->getSceneData()->speed;
-  root["path"] = "/led/" + strip->getAnimation()->getPath();
-  root["leds"] = strip->numPixels();
-
-  // modes
-  // -------------------------------------------------------------
-  JsonArray& modes = root.createNestedArray("modes");
-  std::vector<Animation*> animations = strip->getAnimations();
-  for (size_t i = 0; i < animations.size(); i++) {
-    JsonObject& mode = modes.createNestedObject();
-    mode["name"] = animations[i]->getSceneData()->modeName;
-    mode["path"] = "/led/" + animations[i]->getPath();
-  }
-
-  // buttons
-  // -------------------------------------------------------------
-
-  JsonArray& buttons = root.createNestedArray("buttons");
-  for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
-    JsonObject& btn = buttons.createNestedObject();
-    btn["name"] = this->buttons[i]->getName();
-    btn["scene"] = this->buttons[i]->getSceneName();
-  }
-
-  // scenes
-  // -------------------------------------------------------------
-
-  JsonArray& scenes = root.createNestedArray("scenes");
-  Dir dir = SPIFFS.openDir("/");
-  while (dir.next()) {
-    if (dir.fileName().startsWith("/scene_")) {
-      scenes.add(dir.fileName().substring(7));
-    }
-  }
-
-  // colors
-  // -------------------------------------------------------------
-
-  JsonArray& colors = root.createNestedArray("colors");
-  for (int i = 0; i < strip->numPixels(); i++) {
-    String hexString =
-        String(strip->getAnimation()->getSceneData()->colors[i], HEX);
-    while (hexString.length() < 6) hexString = "0" + hexString;
-
-    colors.add(hexString);
-  }
-
-  // file system
-  // -------------------------------------------------------------
-
-  uint32_t totalSize = 0;
-  uint32_t numerOfFiles = 0;
-  JsonObject& fileSystem = root.createNestedObject("filesystem");
-  JsonArray& files = fileSystem.createNestedArray("files");
-
-  dir = SPIFFS.openDir("/");
-  while (dir.next()) {
-    numerOfFiles++;
-    totalSize += dir.fileSize();
-    JsonObject& file = files.createNestedObject();
-    file["name"] = dir.fileName();
-    file["size"] = dir.fileSize();
-  }
-
-  fileSystem["count"] = numerOfFiles;
-  fileSystem["size"] = totalSize;
-  fileSystem["total"] = 4 * 1024 * 1024;
-
-  // END
-  // -------------------------------------------------------------
-
-  String content;
-  root.prettyPrintTo(content);
-
-  server->sendHeader("Connection", "close");
-  server->send(200, "application/json", content);
-}
-
 void LEDWebServer::setup() {
+  debugln("LEDWebServer::setup - Setup LEDWebServer...");
   server->on("/", [=]() { handleRequest(); });
   server->onNotFound([=]() { handleRequest(); });
   server->begin();
@@ -117,7 +33,7 @@ boolean LEDWebServer::handleAnimation(Animation* animation) {
     strip->setMode(animation->getSceneData()->modeName, server->arg("colors"),
                    server->arg("speed"));
 
-    streamStatus();
+    streamStatus(server, this);
     return true;
   }
   return false;
@@ -128,20 +44,24 @@ boolean LEDWebServer::handleScenes() {
   const String name = server->arg("name");
   if (uri.equals("/led/scene/add") && name != "") {
     storage->storeScene(name);
-    streamStatus();
+    streamStatus(server, this);
     return true;
   } else if (uri.equals("/led/scene/remove") && name != "") {
     storage->deleteScene(name);
-    streamStatus();
+    streamStatus(server, this);
     return true;
   } else if (uri.equals("/led/scene/set") && name != "") {
     if (name == "Off") {
       strip->setMode("Off");
+      config->setParameter("LAST_SCENE", "Off");
+      storage->saveConfig();
     } else {
       storage->loadScene(name);
+      config->setParameter("LAST_SCENE", name);
+      storage->saveConfig();
     }
 
-    streamStatus();
+    streamStatus(server, this);
     return true;
   }
   return false;
@@ -152,12 +72,73 @@ boolean LEDWebServer::handleButtons() {
   const String buttonName = server->arg("button");
   const String sceneName = server->arg("scene");
   if (uri.equals("/led/button/assign") && buttonName != "" && sceneName != "") {
-    for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
-      if (buttons[i]->getName() == buttonName) {
-        buttons[i]->assignScene(sceneName);
+    for (size_t i = 0; i < buttons->size(); i++) {
+      if (buttons->at(i)->getName() == buttonName) {
+        buttons->at(i)->assignScene(sceneName);
       }
     }
-    streamStatus();
+    streamStatus(server, this);
+    return true;
+  }
+
+  return false;
+}
+
+boolean LEDWebServer::handleOTA() {
+  const String uri = server->uri();
+  const String updateURL = server->arg("url");
+
+  if (uri.equals("/ota") && updateURL != "") {
+    String fingerprint = "4e01748c3b8412ed56cfc6a5729136624ae4d082";
+
+    t_httpUpdate_return ret = ESPhttpUpdate.update(updateURL, "", fingerprint);
+
+    Serial.println("*** Done updating!");
+
+    switch (ret) {
+      case HTTP_UPDATE_FAILED:
+        debug("Updated FAILED (%d): %s", ESPhttpUpdate.getLastError(),
+              ESPhttpUpdate.getLastErrorString().c_str());
+        break;
+
+      case HTTP_UPDATE_NO_UPDATES:
+        debugln("No update needed!");
+        break;
+
+      case HTTP_UPDATE_OK:
+        debugln("Update OK!");
+        break;
+    }
+
+    streamStatus(server, this);
+    return true;
+  }
+
+  return false;
+}
+
+boolean LEDWebServer::handleConfig() {
+  const String uri = server->uri();
+  const String key = server->arg("key");
+  const String value = server->arg("value");
+  const String json = server->arg("json");
+  if (uri.equals("/led/config/set") && key != "" && value != "") {
+    config->setParameter(key, value);
+    storage->saveConfig();
+    streamStatus(server, this);
+    return true;
+  } else if (uri.equals("/led/config/update") && json != "") {
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& root = jsonBuffer.parse(json);
+    JsonArray& data = root["config"].as<JsonArray>();
+
+    for (auto& param : data) {
+      String key = param["name"];
+      String value = param["value"];
+      config->setParameter(key, value);
+    }
+
+    streamStatus(server, this);
     return true;
   }
 
@@ -179,13 +160,14 @@ void LEDWebServer::handleRequest() {
     }
   }
 
-  responseSend = responseSend || handleScenes() || handleButtons();
+  responseSend =
+      responseSend || handleScenes() || handleButtons() || handleConfig();
 
   if (!responseSend) {
     String path = uri;
 
     if (uri == "/status") {
-      streamStatus();
+      streamStatus(server, this);
       return;
     }
 
@@ -199,7 +181,6 @@ void LEDWebServer::handleRequest() {
     }
 
     if (!storage->exists(path)) {
-      Serial.println("Cannot access file...");
       server->send(404);
       return;
     }
@@ -226,3 +207,11 @@ void LEDWebServer::handleRequest() {
     dataFile.close();
   }
 }
+
+LogoConfig* LEDWebServer::getConfig() { return config; }
+
+LEDStrip* LEDWebServer::getLEDStrip() { return strip; }
+
+LogoStorage* LEDWebServer::getStorage() { return storage; }
+
+std::vector<LogoButton*>* LEDWebServer::getButtons() { return buttons; }

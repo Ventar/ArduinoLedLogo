@@ -11,7 +11,7 @@ class AnimationMeteorRain : public Animation {
   /**
    * Constructor
    */
-  AnimationMeteorRain(LogoDynamicConfig* config, Adafruit_NeoPixel* strip)
+  AnimationMeteorRain(LogoConfig* config, Adafruit_NeoPixel* strip)
       : Animation(config, strip, "Meteor Rain", "Single", "meteor"){};
 
   /**

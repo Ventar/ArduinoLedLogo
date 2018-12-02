@@ -7,16 +7,32 @@ function showPage(page) {
 
     $('#navScenes').removeClass('active');
     $('#navProgram').removeClass('active');
+    $('#navConfig').removeClass('active');
 
     if (page == 'scenes') {
+
         $('#navScenes').addClass('active');
+
         $('#scenesCards').show();
         $('#programCards').hide();
+        $('#configCards').hide();
 
     } else if (page == 'program') {
-        $('#navProgram').addClass('active')
+
+        $('#navProgram').addClass('active');
+
         $('#scenesCards').hide();
         $('#programCards').show();
+        $('#configCards').hide();
+
+    } else if (page == 'config') {
+
+        $('#navConfig').addClass('active');
+
+        $('#scenesCards').hide();
+        $('#programCards').hide();
+        $('#configCards').show();
+
     }
 }
 
@@ -168,14 +184,20 @@ function renderSceneCards() {
 
 
     $('#scSceneSelect').empty();
+    $('#sscSceneSelect').empty();
 
     $('#scSceneButtonRemove').hide();
     $('#scSceneButtonEnable').hide();
 
     $('#scSceneSelect').append('<option selected="">Select a scene...</option>');
 
+    $('#sscSceneSelect').append('<option value="Off">Off</option>');
+    $('#sscSceneSelect').append('<option value="Last">Last</option>');
+
+
     for (var i = 0; i < data.scenes.length; i++) {
         $('#scSceneSelect').append('<option value="' + data.scenes[i] + '">' + data.scenes[i] + '</option>');
+        $('#sscSceneSelect').append('<option value="' + data.scenes[i] + '">' + data.scenes[i] + '</option>');
     }
 
     $('#scButtonsContent').empty();
@@ -212,6 +234,34 @@ function renderSceneCards() {
 
 
 /**
+ * Render the CONFIG card.
+ * -------------------------------------------------------------------------------------------------------------------------------------------
+ */
+function renderConfigCard() {
+
+    for (var i = 0; i < data.config.length; i++) {
+        if (data.config[i].name == 'DEFAULT_SPEED') {
+            $('#confDefaultSpeed').val(data.config[i].value);
+        } else if (data.config[i].name == 'MAX_DELAY') {
+            $('#confMaxDelay').val(data.config[i].value);
+        } else if (data.config[i].name == 'NEOPIXEL_NUMBER') {
+            $('#confNeoPixelNumber').val(data.config[i].value);
+        } else if (data.config[i].name == 'NEOPIXEL_PIN') {
+            $('#confNeoPixelPin').val(data.config[i].value);
+        } else if (data.config[i].name == 'WIFI_MDNS_NAME') {
+            $('#confMDNSName').val(data.config[i].value);
+        } else if (data.config[i].name == 'WIFI_NAME') {
+            $('#confWiFiName').val(data.config[i].value);
+        } else if (data.config[i].name == 'BUTTON_PINS') {
+            $('#confButtonPins').val(data.config[i].value);
+        } else if (data.config[i].name == 'START_SCENE') {
+            $('#sscSceneSelect').val(data.config[i].value);
+        }
+    }
+
+}
+
+/**
  * Updates the page from the JSON data structure send by the logo.
  */
 function updatePage() {
@@ -221,6 +271,7 @@ function updatePage() {
     renderModeCard();
     renderColorCard();
     renderSpeedCard();
+    renderConfigCard();
     renderProgramableSceneCard();
 
 

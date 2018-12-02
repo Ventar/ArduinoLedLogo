@@ -8,7 +8,7 @@ class AnimationCircle : public Animation {
   /**
    * Constructor
    */
-  AnimationCircle(LogoDynamicConfig* config, Adafruit_NeoPixel* strip)
+  AnimationCircle(LogoConfig* config, Adafruit_NeoPixel* strip)
       : Animation(config, strip, "Circle", "Strip", "circle"){};
 
   /**

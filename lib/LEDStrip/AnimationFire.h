@@ -11,7 +11,7 @@ class AnimationFire : public Animation {
   /**
    * Constructor
    */
-  AnimationFire(LogoDynamicConfig* config, Adafruit_NeoPixel* strip)
+  AnimationFire(LogoConfig* config, Adafruit_NeoPixel* strip)
       : Animation(config, strip, "Fire", "None", "fire"){};
 
   /**

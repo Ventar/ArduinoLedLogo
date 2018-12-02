@@ -138,3 +138,44 @@ function changeButtonAssignment(button) {
     var scene = $('#scButtonSelector' + button + ' option:selected').text();
     sendRequestToLogo(domain + '/led/button/assign?button=' + button + '&scene=' + scene);
 }
+
+
+/**
+ * Builds the JSON object to update the configuration.
+ */
+function buildConfigJSON() {
+
+    for (var i = 0; i < data.config.length; i++) {
+        if (data.config[i].name == 'DEFAULT_SPEED') {
+            data.config[i].value = $('#confDefaultSpeed').val();
+        } else if (data.config[i].name == 'MAX_DELAY') {
+            data.config[i].value = $('#confMaxDelay').val();
+        } else if (data.config[i].name == 'NEOPIXEL_NUMBER') {
+            data.config[i].value = $('#confNeoPixelNumber').val();
+        } else if (data.config[i].name == 'NEOPIXEL_PIN') {
+            data.config[i].value = $('#confNeoPixelPin').val();
+        } else if (data.config[i].name == 'WIFI_MDNS_NAME') {
+            data.config[i].value = $('#confMDNSName').val();
+        } else if (data.config[i].name == 'WIFI_NAME') {
+            data.config[i].value = $('#confWiFiName').val();
+        } else if (data.config[i].name == 'BUTTON_PINS') {
+            data.config[i].value = $('#confButtonPins').val();
+        }
+    }
+
+}
+
+/**
+ * Updates all configuration values from the config page.
+ */
+function updateConfigration() {
+    buildConfigJSON();
+    sendRequestToLogo(domain + '/led/config/update' + '?json={"config":' + JSON.stringify(data.config) + '}');
+}
+
+/**
+ * Changes the startup scene for the logo.
+ */
+function changeStartScene() {
+    sendRequestToLogo(domain + '/led/config/set' + '?key=START_SCENE&value=' + $('#sscSceneSelect').val());
+}

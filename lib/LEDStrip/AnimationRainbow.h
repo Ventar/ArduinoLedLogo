@@ -11,7 +11,7 @@ class AnimationRainbow : public Animation {
   /**
    * Constructor.
    */
-  AnimationRainbow(LogoDynamicConfig* config, Adafruit_NeoPixel* strip)
+  AnimationRainbow(LogoConfig* config, Adafruit_NeoPixel* strip)
       : Animation(config, strip, "Rainbow", "None", "rainbow"){};
 
   /**

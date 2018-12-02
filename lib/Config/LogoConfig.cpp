@@ -1,47 +1,93 @@
 #include <LogoConfig.h>
 
-String LogoDynamicConfig::getParameterAsString(ConfigKeys key) {
-  std::map<ConfigKeys, String>::iterator itr = configMap->find(key);
-  if (itr == configMap->end()) {
-    switch (key) {
-      case NEOPIXEL_NUMBER:
-        return "44";
-      case NEOPIXEL_PIN:
-        return "0";
-      case DEFAULT_SPEED:
-        return "50";
-      case MAX_DELAY:
-        return "20000";
-      case WIFI_NAME:
-        return "MRO Inc. LED Device";
-      case WIFI_PASSWORD:
-        return "mro";
-      case WIFI_MDNS_NAME:
-        return "mro";
-    }
-  } else {
-    return itr->second;
-  }
+String LogoConfig::getParameterAsString(String key) {
+  std::map<String, String>::iterator itr = configMap->find(key);
+  return itr->second;
 }
 
-uint8_t LogoDynamicConfig::getParameterAsShort(ConfigKeys key) {
+uint8_t LogoConfig::getParameterAsShort(String key) {
   return (uint8_t)getParameterAsString(key).toInt();
 }
 
-uint16_t LogoDynamicConfig::getParameterAsInt(ConfigKeys key) {
+uint8_t LogoConfig::getParameterAsPin(String key) {
+  String data = getParameterAsString(key);
+  if (data == "D0") {
+    return D0;
+  } else if (data == "D1") {
+    return D1;
+  } else if (data == "D2") {
+    return D2;
+  } else if (data == "D3") {
+    return D3;
+  } else if (data == "D4") {
+    return D4;
+  } else if (data == "D5") {
+    return D5;
+  } else if (data == "D6") {
+    return D6;
+  } else if (data == "D7") {
+    return D7;
+  } else if (data == "D8") {
+    return D8;
+  }
+  return 0;
+}
+
+std::vector<uint8_t> LogoConfig::getParameterAsPinList(String key) {
+  String pins = getParameterAsString(key);
+  std::vector<uint8_t> vector;
+  // vector.resize(4);
+
+  char delimiter[] = ",;";
+  char* ptr;
+
+  ptr = strtok((char*)pins.c_str(), delimiter);
+
+  while (ptr != NULL) {
+    String data = String(ptr);
+
+    if (data == "D0") {
+      vector.push_back(D0);
+    } else if (data == "D1") {
+      vector.push_back(D0);
+    } else if (data == "D2") {
+      vector.push_back(D2);
+    } else if (data == "D3") {
+      vector.push_back(D3);
+    } else if (data == "D4") {
+      vector.push_back(D4);
+    } else if (data == "D5") {
+      vector.push_back(D5);
+    } else if (data == "D6") {
+      vector.push_back(D6);
+    } else if (data == "D7") {
+      vector.push_back(D7);
+    } else if (data == "D8") {
+      vector.push_back(D8);
+    }
+
+    ptr = strtok(NULL, delimiter);
+  }
+  return vector;
+}
+
+uint16_t LogoConfig::getParameterAsInt(String key) {
   return (uint16_t)getParameterAsString(key).toInt();
 }
 
-uint32_t LogoDynamicConfig::getParameterAsLong(ConfigKeys key) {
+uint32_t LogoConfig::getParameterAsLong(String key) {
   return (uint32_t)getParameterAsString(key).toInt();
 }
 
-const char* LogoDynamicConfig::getParameterAsCString(ConfigKeys key) {
+const char* LogoConfig::getParameterAsCString(String key) {
   return getParameterAsString(key).c_str();
 }
 
-void LogoDynamicConfig::setParameter(ConfigKeys key, String value) {}
-
-std::map<ConfigKeys, String>* LogoDynamicConfig::getConfigMap() {
-  return configMap;
+void LogoConfig::setParameter(String key, String value) {
+  if (configMap->find(key) != configMap->end()) {
+    configMap->erase(key);
+  }
+  configMap->insert(std::pair<String, String>(key, value));
 }
+
+std::map<String, String>* LogoConfig::getConfigMap() { return configMap; }

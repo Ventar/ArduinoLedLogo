@@ -8,7 +8,7 @@ class AnimationCloud : public Animation {
   /**
    * Constructor
    */
-  AnimationCloud(LogoDynamicConfig* config, Adafruit_NeoPixel* strip)
+  AnimationCloud(LogoConfig* config, Adafruit_NeoPixel* strip)
       : Animation(config, strip, "Cloud", "Strip", "cloud"){};
 
   /**

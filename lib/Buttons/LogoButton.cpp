@@ -2,6 +2,7 @@
 #include <LogoButton.h>
 
 void LogoButton::setup() {
+  debug("LogoButton::setup - Setup Button %s ...", this->name.c_str());
   pinMode(pin, INPUT);
   sceneName = storage->loadSceneForButton(this->name);
 };

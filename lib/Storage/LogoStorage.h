@@ -3,13 +3,17 @@
 
 #include <FS.h>
 #include <LEDStrip.h>
+#include <LogoConfig.h>
 
 class LogoStorage {
  public:
   /**
    * Constructor.
    */
-  LogoStorage(LEDStrip* strip) { this->strip = strip; };
+  LogoStorage(LogoConfig* config, LEDStrip* strip) {
+    this->strip = strip;
+    this->config = config;
+  };
 
   /**
    * Stores the current scene of the device in the memory (SPIFFS).
@@ -44,7 +48,7 @@ class LogoStorage {
   /**
    * Save the configuration value to the storage
    */
-  void saveConfig(String name, String value);
+  void saveConfig();
 
   /**
    * Open a file from the internal storage in read only mode.
@@ -63,6 +67,7 @@ class LogoStorage {
 
  private:
   LEDStrip* strip;
+  LogoConfig* config;
 };
 
 #endif

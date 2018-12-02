@@ -8,7 +8,7 @@ class AnimationStatic : public Animation {
   /**
    * Constructor
    */
-  AnimationStatic(LogoDynamicConfig* config, Adafruit_NeoPixel* strip)
+  AnimationStatic(LogoConfig* config, Adafruit_NeoPixel* strip)
       : Animation(config, strip, "Static", "Strip", "static"){};
 
   /**

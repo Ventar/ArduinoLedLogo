@@ -45,7 +45,7 @@ class Animation {
   /**
    * Constructor.
    */
-  Animation(LogoDynamicConfig* config, Adafruit_NeoPixel* strip, String name,
+  Animation(LogoConfig* config, Adafruit_NeoPixel* strip, String name,
             String ledUsageName, String path);
 
   /**
@@ -110,7 +110,7 @@ class Animation {
   /**
    * The configuration class.
    */
-  LogoDynamicConfig* config;
+  LogoConfig* config;
 
   /**
    * Comination of data fields that make a scene displayed by the logo.

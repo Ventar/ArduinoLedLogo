@@ -12,7 +12,7 @@ class LEDStrip {
   /**
    * Constructor.
    */
-  LEDStrip(LogoDynamicConfig* config);
+  LEDStrip(LogoConfig* config);
 
   /**
    * Perform the setup operation of this class inside of the Arduino setup
@@ -62,7 +62,7 @@ class LEDStrip {
   /**
    * Configuration class.
    */
-  LogoDynamicConfig* config;
+  LogoConfig* config;
   /**
    * Reference to the NeoPixel strip.
    */

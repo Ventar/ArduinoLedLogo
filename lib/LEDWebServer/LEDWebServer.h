@@ -15,8 +15,8 @@ class LEDWebServer {
   /**
    * Constructor.
    */
-  LEDWebServer(LogoDynamicConfig* config, LEDStrip* strip, LogoStorage* storage,
-               LogoButton** buttons);
+  LEDWebServer(LogoConfig* config, LEDStrip* strip, LogoStorage* storage,
+               std::vector<LogoButton*>* buttons);
 
   /**
    * Performs the needed setup for the LED web server.
@@ -29,9 +29,27 @@ class LEDWebServer {
    */
   void loop();
 
- private:
-  void streamStatus();
+  /**
+   * Returns the configuration class of the logo.
+   */
+  LogoConfig* getConfig();
 
+  /**
+   * Returns the controlled LEDStrip.
+   */
+  LEDStrip* getLEDStrip();
+
+  /**
+   * Returns the storage.
+   */
+  LogoStorage* getStorage();
+
+  /**
+   * Returns the available buttons
+   */
+  std::vector<LogoButton*>* getButtons();
+
+ private:
   /**
    * Method to handle an incoming request
    */
@@ -56,6 +74,17 @@ class LEDWebServer {
   boolean handleButtons();
 
   /**
+   * Utility method to check if an icoming request wants to manage configuration
+   * parameters for the logo.
+   */
+  boolean handleConfig();
+
+  /**
+   * Handles the auto update of the software via OTA.
+   */
+  boolean handleOTA();
+
+  /**
    * Reference to the storage class to store the crrent scene in the SPIFFS.
    */
   LogoStorage* storage = NULL;
@@ -63,7 +92,7 @@ class LEDWebServer {
   /**
    * Configuration class.
    */
-  LogoDynamicConfig* config;
+  LogoConfig* config;
 
   /**
    * The LED strip to manage.
@@ -73,7 +102,7 @@ class LEDWebServer {
   /**
    * Buttons configured to control the logo.
    */
-  LogoButton** buttons;
+  std::vector<LogoButton*>* buttons;
 
   /**
    * The actual webserver.

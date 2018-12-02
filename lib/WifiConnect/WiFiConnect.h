@@ -11,7 +11,7 @@ class WiFiConnect {
   /**
    * Constructor.
    */
-  WiFiConnect(LogoDynamicConfig* config);
+  WiFiConnect(LogoConfig* config);
 
   /**
    * Starts the connection process. Either connects to the stored WiFi network
@@ -28,7 +28,7 @@ class WiFiConnect {
   /**
    * Logo configration.
    */
-  LogoDynamicConfig* config;
+  LogoConfig* config;
 };
 
 #endif

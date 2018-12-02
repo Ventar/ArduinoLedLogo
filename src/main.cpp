@@ -6,26 +6,30 @@
 #include <LogoConfig.h>
 #include <LogoStorage.h>
 #include <WiFiConnect.h>
+#include <vector>
 
-LogoDynamicConfig config = LogoDynamicConfig();
+LogoConfig config = LogoConfig();
 WiFiConnect wifiConnection(&config);
 LEDStrip strip = LEDStrip(&config);
-LogoStorage storage = LogoStorage(&strip);
+LogoStorage storage = LogoStorage(&config, &strip);
 
-LogoButton* buttons[NUMBER_OF_BUTTONS];
-LEDWebServer ledWebServer = LEDWebServer(&config, &strip, &storage, buttons);
+std::vector<LogoButton*> buttons;
+LEDWebServer ledWebServer = LEDWebServer(&config, &strip, &storage, &buttons);
 
 void setup() {
   Serial.begin(115200);
   debugln("\n\nMain: Logo started, execute setup...");
   debugln("Main: -------------------------------------------------------");
-
-  strip.setup();
   storage.setup();
+  storage.loadConfig();
+  strip.setup();
 
-  for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
-    buttons[i] =
-        new LogoButton(String(char(65 + i)), BUTTON_PINS[i], &strip, &storage);
+  // TODO: free memory
+  std::vector<uint8_t> buttonpins = config.getParameterAsPinList("BUTTON_PINS");
+
+  for (size_t i = 0; i < buttonpins.size(); i++) {
+    buttons.push_back(
+        new LogoButton(String(char(65 + i)), buttonpins[i], &strip, &storage));
     buttons[i]->setup();
   }
 
@@ -44,7 +48,7 @@ void loop() {
   strip.loop();
   ledWebServer.loop();
 
-  for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
+  for (size_t i = 0; i < buttons.size(); i++) {
     buttons[i]->loop();
   }
 }

@@ -1,7 +1,10 @@
 
 #include <LogoStorage.h>
+#include <iterator>
+#include <map>
 
 void LogoStorage::setup() {
+  debugln("Setup LogoStorage...");
   SPIFFS.begin();
 
 #ifdef DEBUG
@@ -103,3 +106,32 @@ void LogoStorage::deleteScene(String name) {
 boolean LogoStorage::exists(String name) { return SPIFFS.exists(name); }
 
 File LogoStorage::open(String name) { return SPIFFS.open(name, "r"); }
+
+void LogoStorage::loadConfig() {
+  File f = SPIFFS.open("/config", "r");
+
+  String line = f.readStringUntil('\n');
+  while (line != NULL) {
+    String key = line.substring(0, line.indexOf("="));
+    String value = line.substring(line.indexOf("=") + 1);
+    debug("LogoStorage::loadConfig - %s ::=[%s]", key.c_str(), value.c_str());
+    config->setParameter(key, value);
+    line = f.readStringUntil('\n');
+  }
+
+  f.close();
+}
+
+void LogoStorage::saveConfig() {
+  SPIFFS.remove("/config");
+  File f = SPIFFS.open("/config", "w");
+
+  std::map<String, String>* data = config->getConfigMap();
+  std::map<String, String>::iterator it;
+
+  for (it = data->begin(); it != data->end(); it++) {
+    f.print(it->first + String("=") + it->second + String("\n"));
+  }
+
+  f.close();
+}

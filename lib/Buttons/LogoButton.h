@@ -14,6 +14,10 @@ class LogoButton {
     this->pin = pin;
     this->strip = strip;
     this->storage = storage;
+    debug(
+        "LogoButton::constructor - Created button with name ::= [%s] on pin "
+        "::= [%d]",
+        name.c_str(), pin);
   };
 
   /**

@@ -8,11 +8,12 @@
 #include <WiFiConnect.h>
 #include <WiFiManager.h>
 
-WiFiConnect::WiFiConnect(LogoDynamicConfig* config) { this->config = config; }
+WiFiConnect::WiFiConnect(LogoConfig* config) { this->config = config; }
 
 void configModeCallback(WiFiManager* myWiFiManager) {
   debug(
-      "WifiConnect: Entered WiFi config mode IP ::=[%s], SSID ::=[%s], MAC "
+      "WifiConnect::configModeCallback - Entered WiFi config mode IP ::=[%s], "
+      "SSID ::=[%s], MAC "
       "::= [%s]",
       WiFi.softAPIP().toString().c_str(),
       myWiFiManager->getConfigPortalSSID().c_str(), WiFi.macAddress().c_str());
@@ -24,23 +25,26 @@ void WiFiConnect::reset() {
 }
 
 void WiFiConnect::connect() {
-  debugln("WiFiConnect: Connect executed, try to connect to WiFi network ...");
+  debugln(
+      "WiFiConnect::connect -  Connect executed, try to connect to WiFi "
+      "network ...");
 
   WiFiManager wifiManager;
   wifiManager.setDebugOutput(WIFI_DEBUG);
   wifiManager.setAPCallback(configModeCallback);
-  wifiManager.autoConnect(config->getParameterAsCString(WIFI_NAME),
-                          config->getParameterAsCString(WIFI_PASSWORD));
+  wifiManager.autoConnect(config->getParameterAsCString("WIFI_NAME"),
+                          config->getParameterAsCString("WIFI_PASSWORD"));
   WiFi.hostname("MROPOINT");
 
   debug(
-      "WifiConnect: Connected to IP ::= [%s], SSID ::= [%s], MAC Address ::= "
+      "WifiConnect::connect - Connected to IP ::= [%s], SSID ::= [%s], MAC "
+      "Address ::= "
       "[%s]",
       WiFi.localIP().toString().c_str(), WiFi.SSID().c_str(),
       WiFi.macAddress().c_str());
 
-  if (MDNS.begin(config->getParameterAsCString(WIFI_MDNS_NAME))) {
-    debug("WiFiConnect: MDNS responder started with name ::= [%s]",
-          config->getParameterAsString(WIFI_MDNS_NAME).c_str());
+  if (MDNS.begin(config->getParameterAsCString("WIFI_MDNS_NAME"))) {
+    debug("WiFiConnect::connect - MDNS responder started with name ::= [%s]",
+          config->getParameterAsString("WIFI_MDNS_NAME").c_str());
   }
 }
