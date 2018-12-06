@@ -87,11 +87,21 @@ boolean LEDWebServer::handleButtons() {
 boolean LEDWebServer::handleOTA() {
   const String uri = server->uri();
   const String updateURL = server->arg("url");
+  const String fingerprint = server->arg("fingerprint");
 
   if (uri.equals("/ota") && updateURL != "") {
-    String fingerprint = "4e01748c3b8412ed56cfc6a5729136624ae4d082";
+    debug("Exceute OTA update with url ::= [%s], fingerprint ::= [%s]",
+          updateURL.c_str(), fingerprint.c_str());
 
-    t_httpUpdate_return ret = ESPhttpUpdate.update(updateURL, "", fingerprint);
+    t_httpUpdate_return ret;
+
+    if (fingerprint != "") {
+      debugln("Update with fingerprint");
+      ret = ESPhttpUpdate.update(updateURL, "", fingerprint);
+    } else {
+      debugln("Update without fingerprint");
+      ret = ESPhttpUpdate.update(updateURL);
+    }
 
     Serial.println("*** Done updating!");
 
@@ -137,7 +147,7 @@ boolean LEDWebServer::handleConfig() {
       String value = param["value"];
       config->setParameter(key, value);
     }
-
+    storage->saveConfig();
     streamStatus(server, this);
     return true;
   }
@@ -149,7 +159,8 @@ void LEDWebServer::handleRequest() {
   server->sendHeader("Access-Control-Allow-Origin", "*");
   const String uri = server->uri();
 
-  debug("HTTP request to URI ::= [%s]", uri.c_str());
+  debug("LEDWebserver::handleRequest - HTTP request to URI ::= [%s]",
+        uri.c_str());
 
   boolean responseSend = false;
   std::vector<Animation*> animations = strip->getAnimations();
@@ -160,8 +171,8 @@ void LEDWebServer::handleRequest() {
     }
   }
 
-  responseSend =
-      responseSend || handleScenes() || handleButtons() || handleConfig();
+  responseSend = responseSend || handleScenes() || handleButtons() ||
+                 handleConfig() || handleOTA();
 
   if (!responseSend) {
     String path = uri;

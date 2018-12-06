@@ -3,8 +3,8 @@
 /**
  * Names of the LED animation modes
  */
-Animation::Animation(LogoConfig* config, Adafruit_NeoPixel* strip,
-                     String name, String ledUsageName, String path) {
+Animation::Animation(LogoConfig* config, Adafruit_NeoPixel* strip, String name,
+                     String ledUsageName, String path) {
   this->config = config;
   this->strip = strip;
   this->path = path;
@@ -71,12 +71,6 @@ void Animation::setColorListFromString(String colorList) {
     lastColor = newColor;
     data->colors[i] = lastColor;
   }
-  debug(
-      "Animation::setColorListFromString - Status mode ::=[%s], delay ::= "
-      "[%d], speed ::= [%d], "
-      "colors ::= [%s]",
-      data->modeName.c_str(), data->delay, data->speed,
-      getColorListAsString().c_str());
 }
 
 String Animation::getColorListAsString() {

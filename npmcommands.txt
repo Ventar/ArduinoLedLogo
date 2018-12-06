@@ -1,3 +1,3 @@
 
-polymer-bundler --inline-css --inline-scripts --out-dir ..\..\data\ file:///f:/ArduinoSourceCode/ArduinoLedLogo/resources/pages/bootstrap.html
-html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true ..\..\data\index.html -o ..\..\data\index-min.html
+polymer-bundler --inline-css --inline-scripts --out-dir .\data\ file:///f:/ArduinoSourceCode/ArduinoLedLogo/resources/pages/index.html
+html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true .\data\index.html -o .\data\index-min.html

@@ -8,7 +8,7 @@
 //  Debugging configuration
 // -----------------------------------------
 
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
 
@@ -23,6 +23,8 @@
 
 // setting to true will enable debugging information for the WiFiManage libary.
 #define WIFI_DEBUG true
+#define DEBUG_ESP_HTTP_UPDATE 1
+#define DEBUG_ESP_UPDATER 1
 
 /**
  * Dynamic configuration values for the logo.
@@ -38,10 +40,6 @@ class LogoConfig {
    * Returns a value from the map.
    */
   String getParameterAsString(String key);
-  /**
-   * Returns a value from the map.
-   */
-  const char* getParameterAsCString(String key);
 
   /**
    * Returns a value from the map.

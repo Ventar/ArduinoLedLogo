@@ -32,7 +32,10 @@ void LEDStrip::setup() {
   //  this->animations.push_back(new AnimationDoubleCircle(&strip));
 
   strip->begin();
-  setMode("Off");
+  for (int i = 0; i < strip->numPixels(); i++) {
+    strip->setPixelColor(i, 0);
+  }
+  strip->show();
 }
 
 uint16_t LEDStrip::numPixels() { return strip->numPixels(); }
@@ -50,12 +53,24 @@ void LEDStrip::setMode(String modeName, String colors, String speed) {
         animations.at(i)->setSpeed(speed.toInt());
       }
 
-      debug(
-          "LEDStrip::setMode - mode ::= [%s], delay ::= [%d], speed ::= "
-          "[%d], colors ::= [%s]",
-          animations.at(i)->getSceneData()->modeName.c_str(),
-          animations.at(i)->getSceneData()->delay,
-          animations.at(i)->getSceneData()->speed, colors.c_str());
+#ifdef DEBUG
+      if (colors.length() >= 21) {
+        debug(
+            "LEDStrip::setMode - mode ::= [%s], delay ::= [%d], speed ::=[%d], "
+            "colors ::= [%s]",
+            animations.at(i)->getSceneData()->modeName.c_str(),
+            animations.at(i)->getSceneData()->delay,
+            animations.at(i)->getSceneData()->speed,
+            (colors.substring(0, 21) + String("...")).c_str());
+      } else {
+        debug(
+            "LEDStrip::setMode - mode ::= [%s], delay ::= [%d], speed ::=[%d], "
+            "colors ::= [%s]",
+            animations.at(i)->getSceneData()->modeName.c_str(),
+            animations.at(i)->getSceneData()->delay,
+            animations.at(i)->getSceneData()->speed, colors.c_str());
+      }
+#endif
 
       animations.at(i)->reset();
     }

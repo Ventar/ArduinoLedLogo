@@ -8,6 +8,8 @@
 #include <WiFiConnect.h>
 #include <vector>
 
+#define LED_LOGO_VERSION "v0.0.1"
+
 LogoConfig config = LogoConfig();
 WiFiConnect wifiConnection(&config);
 LEDStrip strip = LEDStrip(&config);
@@ -22,6 +24,7 @@ void setup() {
   debugln("Main: -------------------------------------------------------");
   storage.setup();
   storage.loadConfig();
+  config.setParameter("VERSION", LED_LOGO_VERSION);
   strip.setup();
 
   // TODO: free memory
@@ -33,15 +36,42 @@ void setup() {
     buttons[i]->setup();
   }
 
-  strip.setMode("Static", "550000");
+  delay(500);
+
+  String startScene = config.getParameterAsString("START_SCENE");
+  if (startScene == "" || startScene == "Off") {
+    strip.setMode("Off");
+  } else if (startScene == "Last") {
+    storage.loadScene(config.getParameterAsString("LAST_SCENE"));
+  } else {
+    storage.loadScene(startScene);
+  }
+
   wifiConnection.connect();
   ledWebServer.setup();
-  strip.setMode("Static", "005500");
-  delay(3000);
 
-  strip.setMode("Off");
-  debugln("Main: Setup finished...");
-  debugln("Main: -------------------------------------------------------");
+  Serial.println(
+      "Main: -------------------------------------------------------");
+  Serial.println(
+      "Main: #       ####### ######     #                            ");
+  Serial.println(
+      "Main: #       #       #     #    #        ####   ####   ####  ");
+  Serial.println(
+      "Main: #       #       #     #    #       #    # #    # #    # ");
+  Serial.println(
+      "Main: #       #####   #     #    #       #    # #      #    # ");
+  Serial.println(
+      "Main: #       #       #     #    #       #    # #  ### #    # ");
+  Serial.println(
+      "Main: #       #       #     #    #       #    # #    # #    # ");
+  Serial.println(
+      "Main: ####### ####### ######     #######  ####   ####   ####  ");
+  Serial.println(
+      "Main: -------------------------------------------------------");
+  Serial.println("Main: Version " + config.getParameterAsString("VERSION"));
+  Serial.println(
+      "Main: -------------------------------------------------------");
+  Serial.println("Main: Setup finished...");
 }
 
 void loop() {

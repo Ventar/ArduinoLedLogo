@@ -1,5 +1,5 @@
-var domain = 'http://192.168.2.106';
-//var domain = '';
+//var domain = 'http://192.168.2.110';
+var domain = '';
 var data;
 var ledToSet;
 
@@ -13,6 +13,8 @@ function sendRequestToLogo(url) {
             data = JSON.parse(this.responseText);
             console.log(data);
             updatePage();
+        } else {
+            console.log("ERROR response with status " + this.status);
         }
     };
     xhttp.open("GET", url, true);
@@ -168,9 +170,21 @@ function buildConfigJSON() {
 /**
  * Updates all configuration values from the config page.
  */
-function updateConfigration() {
+function updateConfiguration() {
     buildConfigJSON();
     sendRequestToLogo(domain + '/led/config/update' + '?json={"config":' + JSON.stringify(data.config) + '}');
+}
+
+/**
+ * Updates all configuration values from the config page.
+ */
+function updateFirmware() {
+
+    var url = domain + '/ota' + '?url=' + $('#ccFWUURL').val();
+    if ($('#ccFWUURLFingerprint').val() && $('#ccFWUURLFingerprint').val() != "") {
+        url += '&fingerprint=' + $('#ccFWUURLFingerprint').val();
+    }
+    sendRequestToLogo(url);
 }
 
 /**

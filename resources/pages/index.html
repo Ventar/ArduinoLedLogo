@@ -263,7 +263,8 @@
 						</div>
 						<p class="card-text btn-group mt-auto">
 							<button type="button" id="scColorButtonAll" class="btn btn-primary" style="display: none; width: 49%;"
-							 data-toggle="tooltip" data-placement="top" data-original-title="Change the color of all LEDs without updating the colors of the Logo.">All</button>
+							 data-toggle="tooltip" data-placement="top" data-original-title="Change the color of all LEDs without updating the colors of the Logo."
+							 onclick="ledSelected('all')">All</button>
 							<button type="button" id="scColorButtonUpdate" class="btn btn-primary btn-lg" style="display: none; width: 49%;"
 							 onclick="updateColorList()" data-toggle="tooltip" data-placement="top" data-original-title="Change the colors of the Logo.">Update</button>
 						</p>
@@ -511,13 +512,13 @@
 							<button id="ccConfigParamsReset" type="button" class="btn btn-primary btn" style="display: inline-block; width: 50%;"
 							 onclick="renderConfigCard()">Reset</button>
 							<button id="ccConfigParamsUpdate" type="button" class="btn btn-primary btn" style="display: inline-block; width: 50%;"
-							 onclick="updateConfigration()">Update</button>
+							 onclick="updateConfiguration()">Update</button>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div id="ccFWU" class="col-md-4 mt-2">
+			<div id="ccFWU" class="col-md-8 mt-2">
 				<div class="card mb-3">
 					<h3 class="card-header">Firmware Update
 					</h3>
@@ -533,23 +534,44 @@
 									<label for="ccFWUURL">URL</label>
 									<input type="" class="form-control  form-control-sm" id="ccFWUURL" aria-describedby="ccFWURLHelp" placeholder="Update URL...">
 									<small id="ccFWURLHelp" class="form-text text-muted">URL of the new firmware file.</small>
+
+									<!--label for="ccFWUURLFingerprint">Certificate Fingerprint</label>
+									<input type="" class="form-control  form-control-sm" id="ccFWUURLFingerprint" aria-describedby="ccFWUURLFingerprintHelp"
+									 placeholder="Update URL..." value="4e01748c3b8412ed56cfc6a5729136624ae4d082">
+									<small id="ccFWUURLFingerprintHelp" class="form-text text-muted">Certificate fingerprint for HTTPS connections</small -->
 								</div>
 							</fieldset>
 						</form>
 						<div class="card-text btn-group mt-auto">
-							<button id="ccFWUUpdate" type="button" class="btn btn-primary btn" style="display: inline-block; width: 100%;">Update</button>
+							<button id="ccFWUUpdate" type="button" class="btn btn-primary btn" style="display: inline-block; width: 100%;"
+							 onclick="updateFirmware()">Update</button>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<div id="ccConfigParams" class="col-md-4 mt-2">
-				<div class="card mb-3">
-					<h3 class="card-header">Configuration
-					</h3>
+				<!-- Modal Remove -->
+				<div class="modal fade" id="ccFWUModalUpdate" tabindex="-1" role="dialog" aria-labelledby="ccFWUModalUpdateLabel"
+				 aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="ccFWUModalUpdateLabel">Update Firmware</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p>Do you want to update the firmware of your logo ? This may cause your logo to not work properly.</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-danger" onclick="updateFirmware()" data-dismiss="modal">Update Firmware</button>
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
 
+			</div>
 
 		</div>
 

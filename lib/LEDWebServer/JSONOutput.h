@@ -51,7 +51,6 @@ void addAvailableModes(LEDWebServer* server, JsonObject& root) {
  */
 void addAvailableButtons(LEDWebServer* server, JsonObject& root) {
   JsonArray& buttons = root.createNestedArray("buttons");
-  Serial.println(server->getButtons()->size());
   for (size_t i = 0; i < server->getButtons()->size(); i++) {
     JsonObject& btn = buttons.createNestedObject();
     btn["name"] = server->getButtons()->at(i)->getName();
@@ -130,6 +129,10 @@ String createJsonStatus(LEDWebServer* server) {
 void streamStatus(ESP8266WebServer* httpServer, LEDWebServer* server) {
   httpServer->sendHeader("Connection", "close");
   httpServer->send(200, "application/json", createJsonStatus(server));
+
+  debugln(
+      "JSONOutput::streamStatus - Created status resonse and send it to "
+      "client...");
 }
 
 #endif

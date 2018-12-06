@@ -29,12 +29,17 @@ void WiFiConnect::connect() {
       "WiFiConnect::connect -  Connect executed, try to connect to WiFi "
       "network ...");
 
+  debug("Start auto connect with name ::=[%s], password ::= [%s]",
+        config->getParameterAsString("WIFI_NAME").c_str(),
+        config->getParameterAsString("WIFI_PASSWORD").c_str());
+
   WiFiManager wifiManager;
   wifiManager.setDebugOutput(WIFI_DEBUG);
   wifiManager.setAPCallback(configModeCallback);
-  wifiManager.autoConnect(config->getParameterAsCString("WIFI_NAME"),
-                          config->getParameterAsCString("WIFI_PASSWORD"));
-  WiFi.hostname("MROPOINT");
+
+  wifiManager.autoConnect(
+      config->getParameterAsString("WIFI_NAME").c_str(),
+      config->getParameterAsString("WIFI_PASSWORD").c_str());
 
   debug(
       "WifiConnect::connect - Connected to IP ::= [%s], SSID ::= [%s], MAC "
@@ -43,7 +48,7 @@ void WiFiConnect::connect() {
       WiFi.localIP().toString().c_str(), WiFi.SSID().c_str(),
       WiFi.macAddress().c_str());
 
-  if (MDNS.begin(config->getParameterAsCString("WIFI_MDNS_NAME"))) {
+  if (MDNS.begin(config->getParameterAsString("WIFI_MDNS_NAME").c_str())) {
     debug("WiFiConnect::connect - MDNS responder started with name ::= [%s]",
           config->getParameterAsString("WIFI_MDNS_NAME").c_str());
   }

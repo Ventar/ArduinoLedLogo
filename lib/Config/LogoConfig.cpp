@@ -79,10 +79,6 @@ uint32_t LogoConfig::getParameterAsLong(String key) {
   return (uint32_t)getParameterAsString(key).toInt();
 }
 
-const char* LogoConfig::getParameterAsCString(String key) {
-  return getParameterAsString(key).c_str();
-}
-
 void LogoConfig::setParameter(String key, String value) {
   if (configMap->find(key) != configMap->end()) {
     configMap->erase(key);
