@@ -23,6 +23,9 @@ void LEDWebServer::setup() {
   server->on("/", [=]() { handleRequest(); });
   server->onNotFound([=]() { handleRequest(); });
   server->begin();
+  const char* headerkeys[] = {"Origin"};
+  size_t headerkeyssize = sizeof(headerkeys) / sizeof(char*);
+  server->collectHeaders(headerkeys, headerkeyssize);
 }
 
 void LEDWebServer::loop() { server->handleClient(); }
@@ -156,7 +159,22 @@ boolean LEDWebServer::handleConfig() {
 }
 
 void LEDWebServer::handleRequest() {
-  server->sendHeader("Access-Control-Allow-Origin", "*");
+  if (server->method() == HTTP_OPTIONS) {
+    server->sendHeader("Access-Control-Allow-Origin", "*");
+    server->sendHeader("Access-Control-Allow-Methods", "PUT,POST,GET,OPTIONS");
+    server->sendHeader("Access-Control-Allow-Headers", "*");
+    server->send(204);
+    return;
+  }
+
+  if (server->hasHeader("Origin")) {
+    server->sendHeader("Access-Control-Allow-Origin", server->header("Origin"));
+  } else {
+    server->sendHeader("Access-Control-Allow-Origin", "*");
+  }
+
+  server->sendHeader("Access-Control-Allow-Credentials", "true");
+
   const String uri = server->uri();
 
   debug("LEDWebserver::handleRequest - HTTP request to URI ::= [%s]",

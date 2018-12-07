@@ -8,7 +8,7 @@
 //  Debugging configuration
 // -----------------------------------------
 
-//#define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
 
