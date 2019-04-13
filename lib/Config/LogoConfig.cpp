@@ -36,7 +36,6 @@ uint8_t LogoConfig::getParameterAsPin(String key) {
 std::vector<uint8_t> LogoConfig::getParameterAsPinList(String key) {
   String pins = getParameterAsString(key);
   std::vector<uint8_t> vector;
-  // vector.resize(4);
 
   char delimiter[] = ",;";
   char* ptr;

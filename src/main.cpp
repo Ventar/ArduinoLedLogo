@@ -27,13 +27,16 @@ void setup() {
   config.setParameter("VERSION", LED_LOGO_VERSION);
   strip.setup();
 
-  // TODO: free memory
-  std::vector<uint8_t> buttonpins = config.getParameterAsPinList("BUTTON_PINS");
+  if (config.getParameterAsInt("NUMBER_OF_BUTTONS") > 0) {
+    // TODO: free memory
+    std::vector<uint8_t> buttonpins =
+        config.getParameterAsPinList("BUTTON_PINS");
 
-  for (size_t i = 0; i < buttonpins.size(); i++) {
-    buttons.push_back(
-        new LogoButton(String(char(65 + i)), buttonpins[i], &strip, &storage));
-    buttons[i]->setup();
+    for (size_t i = 0; i < buttonpins.size(); i++) {
+      buttons.push_back(new LogoButton(String(char(65 + i)), buttonpins[i],
+                                       &strip, &storage));
+      buttons[i]->setup();
+    }
   }
 
   delay(500);

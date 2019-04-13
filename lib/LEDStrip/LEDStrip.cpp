@@ -15,7 +15,7 @@ LEDStrip::LEDStrip(LogoConfig* config) { this->config = config; }
 
 void LEDStrip::setup() {
   strip = new Adafruit_NeoPixel(config->getParameterAsInt("NEOPIXEL_NUMBER"),
-                                config->getParameterAsInt("NEOPIXEL_PIN"),
+                                config->getParameterAsPin("NEOPIXEL_PIN"),
                                 NEO_RGB + NEO_KHZ800);
 
   this->animations.reserve(10);
